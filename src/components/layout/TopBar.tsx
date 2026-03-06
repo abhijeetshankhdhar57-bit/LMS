@@ -7,9 +7,9 @@ export function TopBar() {
     const { user, toggleRole } = useUser();
 
     return (
-        <div className="flex h-14 items-center justify-between border-b bg-white px-6">
-            <div className="text-sm font-medium">
-                Welcome back, <span className="font-bold">{user.name}</span>
+        <div className="flex h-14 items-center justify-between border-b border-white/5 bg-black/20 backdrop-blur-xl px-6">
+            <div className="text-sm font-medium text-foreground/80">
+                Welcome back, <span className="font-bold text-white">{user.name}</span>
             </div>
             <div className="flex items-center gap-4">
                 <Button variant="outline" size="sm" onClick={toggleRole}>
