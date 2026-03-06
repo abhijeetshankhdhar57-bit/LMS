@@ -7,17 +7,13 @@ import { PlayCircle, Award, CheckCircle2 } from "lucide-react";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { LoginCard } from "@/components/auth/LoginCard";
 
 export default async function LearnerDashboard() {
   const session = await getServerSession(authOptions);
 
   if (!session?.user) {
-    return (
-      <div className="flex flex-col items-center justify-center p-24 text-center space-y-4">
-        <h2 className="text-2xl font-bold">Please log in</h2>
-        <p className="text-muted-foreground">You must be signed in with Google to view courses and progress.</p>
-      </div>
-    );
+    return <LoginCard />;
   }
 
   const userId = session.user.id;
