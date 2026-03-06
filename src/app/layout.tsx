@@ -36,11 +36,11 @@ export default async function RootLayout({
       >
         <AuthProvider>
           {!session ? (
-            <main className="min-h-screen relative overflow-hidden flex items-center justify-center p-4">
-              {/* Background Effects for Login */}
-              <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-[#0A1635] pointer-events-none" />
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[120px] pointer-events-none" />
-              <div className="relative z-10 w-full max-w-md">
+            <main className="min-h-screen relative overflow-hidden flex items-center justify-center p-4 bg-[#142340]">
+              {/* Extremely subtle ambient glows */}
+              <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_20%_30%,_rgba(255,255,255,0.03)_0%,_transparent_50%)] pointer-events-none" />
+              <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_80%_80%,_rgba(255,255,255,0.03)_0%,_transparent_50%)] pointer-events-none" />
+              <div className="relative z-10 w-full max-w-[420px]">
                 {children}
               </div>
             </main>
