@@ -6,9 +6,12 @@ import Image from "next/image";
 import { LayoutDashboard, PlayCircle, BookOpen, Settings } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export function Sidebar() {
     const pathname = usePathname();
+    const router = useRouter();
     const { data: session } = useSession();
 
     // @ts-ignore - custom token role
@@ -26,7 +29,11 @@ export function Sidebar() {
         { name: "Settings", href: "/admin/settings", icon: Settings },
     ];
 
-    const links = isAdmin ? adminLinks : learnerLinks;
+    const [viewMode, setViewMode] = useState<"ADMIN" | "LEARNER">("ADMIN");
+
+    // Default to LEARNER if not admin. If admin, respect the toggle state.
+    const activeRole = isAdmin ? viewMode : "LEARNER";
+    const links = activeRole === "ADMIN" ? adminLinks : learnerLinks;
 
     return (
         <motion.div
@@ -81,6 +88,29 @@ export function Sidebar() {
                     );
                 })}
             </nav>
+
+            {/* View Toggle for Admins */}
+            {isAdmin && (
+                <div className="px-4 pb-4">
+                    <button
+                        onClick={() => {
+                            const newMode = viewMode === "ADMIN" ? "LEARNER" : "ADMIN";
+                            setViewMode(newMode);
+                            // Auto-navigate to the home of that appropriate view to avoid confusion
+                            router.push(newMode === "ADMIN" ? "/admin" : "/courses");
+                        }}
+                        className="w-full relative group flex items-center justify-between gap-2 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-300 overflow-hidden bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-white border border-white/5"
+                    >
+                        <span className="relative z-10 tracking-wide">
+                            {viewMode === "ADMIN" ? "Switch to Learner" : "Switch to Admin"}
+                        </span>
+                        <div className="relative z-10 p-1 rounded bg-white/10 group-hover:bg-primary group-hover:text-white transition-colors">
+                            <Settings className="h-3 w-3" />
+                        </div>
+                    </button>
+                </div>
+            )}
+
             <div className="p-4 border-t border-white/10">
                 <div className="rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 p-4 border border-white/10 relative overflow-hidden">
                     <div className="absolute -top-10 -right-10 w-24 h-24 bg-primary/40 blur-2xl rounded-full pointer-events-none" />
