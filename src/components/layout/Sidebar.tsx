@@ -38,11 +38,11 @@ export function Sidebar() {
             <div className="flex h-16 items-center border-b border-white/10 px-6 justify-between relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent opacity-50 pointer-events-none" />
                 <Image
-                    src="/juspay-logo-white.png"
+                    src="/juspay-logo-transparent.png"
                     alt="Juspay"
                     width={110}
                     height={30}
-                    className="z-10 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] object-contain"
+                    className="z-10 object-contain"
                 />
                 {session?.user && (
                     <span className="z-10 text-[10px] uppercase font-bold tracking-widest text-primary bg-primary/10 px-2 py-1 rounded shadow-[0_0_10px_rgba(100,60,255,0.2)] border border-primary/30">
