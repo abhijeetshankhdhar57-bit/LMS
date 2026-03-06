@@ -37,7 +37,13 @@ export function Sidebar() {
         >
             <div className="flex h-16 items-center border-b border-white/10 px-6 justify-between relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent opacity-50 pointer-events-none" />
-                <Image src="/juspay-logo.jpg" alt="Juspay" width={100} height={26} className="z-10 drop-shadow-lg mix-blend-screen" />
+                <Image
+                    src="/juspay-logo.jpg"
+                    alt="Juspay"
+                    width={100}
+                    height={26}
+                    className="z-10 invert grayscale brightness-200 contrast-200 mix-blend-screen drop-shadow-md"
+                />
                 {session?.user && (
                     <span className="z-10 text-[10px] uppercase font-bold tracking-widest text-primary bg-primary/10 px-2 py-1 rounded shadow-[0_0_10px_rgba(100,60,255,0.2)] border border-primary/30">
                         {/* @ts-ignore */}
