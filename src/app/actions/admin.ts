@@ -18,6 +18,7 @@ export async function createVideo(formData: FormData) {
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
     const url = formData.get("url") as string;
+    const driveUrl = formData.get("driveUrl") as string | null;
     const isMandatory = formData.get("isMandatory") === "on";
 
     if (!title || !url) {
@@ -29,6 +30,7 @@ export async function createVideo(formData: FormData) {
             title,
             description,
             url,
+            driveUrl,
             isMandatory,
         },
     });

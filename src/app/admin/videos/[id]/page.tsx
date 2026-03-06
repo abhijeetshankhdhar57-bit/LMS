@@ -62,8 +62,18 @@ export default async function AdminVideoDetailsPage({ params }: { params: Promis
                         <CardHeader>
                             <CardTitle>Video Preview</CardTitle>
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className="space-y-4">
                             <VideoPlayer url={video.url} />
+                            {video.driveUrl && (
+                                <div className="pt-4 border-t border-white/5">
+                                    <h4 className="font-semibold text-sm mb-2 text-muted-foreground">Attached Material</h4>
+                                    <a href={video.driveUrl} target="_blank" rel="noopener noreferrer">
+                                        <Button variant="secondary" className="w-full">
+                                            View Presentation / Drive Resource
+                                        </Button>
+                                    </a>
+                                </div>
+                            )}
                         </CardContent>
                     </Card>
 

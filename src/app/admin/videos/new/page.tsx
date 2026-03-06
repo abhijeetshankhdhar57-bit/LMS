@@ -56,6 +56,14 @@ export default function NewVideoPage() {
                         </div>
 
                         <div className="space-y-2">
+                            <Label htmlFor="driveUrl">Google Drive / Presentation Link</Label>
+                            <Input id="driveUrl" name="driveUrl" placeholder="https://docs.google.com/presentation/d/..." />
+                            <p className="text-xs text-muted-foreground">
+                                Optional: Provide a supplementary link for presentation slides or documents.
+                            </p>
+                        </div>
+
+                        <div className="space-y-2">
                             <Label htmlFor="description">Description</Label>
                             <Textarea
                                 id="description"
