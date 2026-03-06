@@ -52,17 +52,23 @@ export function AddQuestionForm({ videoId }: { videoId: string }) {
                 <Input id="text" name="text" placeholder="e.g. What is the main topic?" required />
             </div>
 
-            <div className="space-y-2">
-                <Label>Question Type</Label>
-                <Select value={type} onValueChange={(v: "MCQ" | "SHORT_ANSWER") => setType(v)}>
-                    <SelectTrigger>
-                        <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="MCQ">Multiple Choice</SelectItem>
-                        <SelectItem value="SHORT_ANSWER">Short Answer</SelectItem>
-                    </SelectContent>
-                </Select>
+            <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                    <Label>Question Type</Label>
+                    <Select value={type} onValueChange={(v: "MCQ" | "SHORT_ANSWER") => setType(v)}>
+                        <SelectTrigger>
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="MCQ">Multiple Choice</SelectItem>
+                            <SelectItem value="SHORT_ANSWER">Short Answer</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div className="space-y-2">
+                    <Label htmlFor="points">Points</Label>
+                    <Input id="points" name="points" type="number" min="1" defaultValue="1" required />
+                </div>
             </div>
 
             {type === "MCQ" && (

@@ -2,12 +2,16 @@
 
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
 
 export async function submitAnswers(
     videoId: string,
-    userId: string,
     answers: { questionId: string; responseText: string }[]
 ) {
+    const session = await getServerSession(authOptions);
+    if (!session?.user) throw new Error("Unauthorized");
+    const userId = session.user.id;
     // First get the video questions to check answers (simple check for MCQ)
     const video = await db.video.findUnique({
         where: { id: videoId },

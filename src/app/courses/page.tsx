@@ -4,10 +4,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PlayCircle, CheckCircle2 } from "lucide-react";
-import { mockLearner } from "@/lib/UserContext";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 export default async function CoursesPage() {
-    const userId = mockLearner.id;
+    const session = await getServerSession(authOptions);
+    if (!session?.user) redirect("/");
+
+    const userId = session.user.id;
 
     const videos = await db.video.findMany({
         orderBy: { createdAt: 'desc' },

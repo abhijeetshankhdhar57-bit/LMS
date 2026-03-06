@@ -65,6 +65,13 @@ export default function NewVideoPage() {
                             />
                         </div>
 
+                        <div className="flex items-center space-x-2">
+                            <input type="checkbox" id="isMandatory" name="isMandatory" className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                            <Label htmlFor="isMandatory" className="font-medium cursor-pointer">
+                                Mark as Mandatory
+                            </Label>
+                        </div>
+
                         <div className="flex justify-end gap-3 pt-4">
                             <Button variant="outline" type="button" onClick={() => router.back()} disabled={isSubmitting}>
                                 Cancel

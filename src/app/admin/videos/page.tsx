@@ -3,8 +3,16 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { PlusCircle, Video } from "lucide-react";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 export default async function AdminVideosPage() {
+    const session = await getServerSession(authOptions);
+    // @ts-ignore
+    if (!session?.user || session.user.role !== "ADMIN") {
+        redirect("/");
+    }
     const videos = await db.video.findMany({
         include: {
             _count: {

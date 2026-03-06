@@ -4,13 +4,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { LayoutDashboard, PlayCircle, BookOpen, Settings } from "lucide-react";
-import { useUser } from "@/lib/UserContext";
+import { useSession } from "next-auth/react";
 
 export function Sidebar() {
     const pathname = usePathname();
-    const { user } = useUser();
+    const { data: session } = useSession();
 
-    const isAdmin = user.role === "ADMIN";
+    // @ts-ignore - custom token role
+    const isAdmin = session?.user?.role === "ADMIN";
 
     const learnerLinks = [
         { name: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -30,9 +31,12 @@ export function Sidebar() {
         <div className="flex h-full w-64 flex-col border-r border-white/5 bg-black/40 backdrop-blur-xl">
             <div className="flex h-14 items-center border-b border-white/5 px-4 justify-between">
                 <Image src="/juspay-logo.png" alt="Juspay" width={90} height={24} className="opacity-90 grayscale brightness-200 contrast-200" />
-                <span className="text-[10px] uppercase font-bold tracking-wider text-primary/80 bg-primary/10 px-2 py-0.5 rounded border border-primary/20">
-                    {user.role}
-                </span>
+                {session?.user && (
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-primary/80 bg-primary/10 px-2 py-0.5 rounded border border-primary/20">
+                        {/* @ts-ignore */}
+                        {session.user.role || "LEARNER"}
+                    </span>
+                )}
             </div>
             <nav className="flex-1 space-y-1 p-4">
                 {links.map((link) => {

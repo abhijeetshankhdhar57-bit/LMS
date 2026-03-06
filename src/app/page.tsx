@@ -4,10 +4,23 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PlayCircle, Award, CheckCircle2 } from "lucide-react";
-import { mockLearner } from "@/lib/UserContext";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 export default async function LearnerDashboard() {
-  const userId = mockLearner.id; // Using our mock user id for server component fetching
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user) {
+    return (
+      <div className="flex flex-col items-center justify-center p-24 text-center space-y-4">
+        <h2 className="text-2xl font-bold">Please log in</h2>
+        <p className="text-muted-foreground">You must be signed in with Google to view courses and progress.</p>
+      </div>
+    );
+  }
+
+  const userId = session.user.id;
 
   // Fetch all videos and the user's scores for them
   const videos = await db.video.findMany({

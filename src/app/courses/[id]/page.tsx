@@ -1,14 +1,17 @@
 import { db } from "@/lib/db";
-import { notFound } from "next/navigation";
-import { VideoPlayer } from "@/components/VideoPlayer";
-import { QuizSection } from "@/components/learner/QuizSection";
+import { notFound, redirect } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { mockLearner } from "@/lib/UserContext";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
+import { CourseInteractiveClient } from "@/components/learner/CourseInteractiveClient";
 
 export default async function CourseDetailsPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
-    const userId = mockLearner.id;
+    const session = await getServerSession(authOptions);
+    if (!session?.user) redirect("/");
+
+    const userId = session.user.id;
     const video = await db.video.findUnique({
         where: { id },
         include: {
@@ -39,28 +42,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
                 <p className="text-muted-foreground mt-2">{video.description}</p>
             </div>
 
-            <div className="grid lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-2 space-y-8">
-                    <div className="rounded-xl overflow-hidden border shadow-sm">
-                        <VideoPlayer url={video.url} />
-                    </div>
-
-                    <div className="prose max-w-none">
-                        <h3>About this module</h3>
-                        <p>{video.description || "Watch the video above to learn more about this topic. Once you have finished the video, complete the knowledge check to earn your score."}</p>
-                    </div>
-                </div>
-
-                <div className="lg:col-span-1">
-                    <div className="sticky top-6">
-                        <QuizSection
-                            videoId={video.id}
-                            questions={video.questions as any}
-                            previousScore={previousScore}
-                        />
-                    </div>
-                </div>
-            </div>
+            <CourseInteractiveClient video={video} previousScore={previousScore} />
         </div>
     );
 }

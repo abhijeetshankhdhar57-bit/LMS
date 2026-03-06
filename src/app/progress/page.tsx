@@ -1,5 +1,7 @@
 import { db } from "@/lib/db";
-import { mockLearner } from "@/lib/UserContext";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
@@ -8,7 +10,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export default async function ProgressPage() {
-    const userId = mockLearner.id;
+    const session = await getServerSession(authOptions);
+    if (!session?.user) redirect("/");
+
+    const userId = session.user.id;
 
     const scores = await db.score.findMany({
         where: { userId },

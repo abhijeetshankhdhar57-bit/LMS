@@ -8,7 +8,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { submitAnswers } from "@/app/actions/learner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, CheckCircle2 } from "lucide-react";
-import { mockLearner } from "@/lib/UserContext";
 
 type Question = {
     id: string;
@@ -20,11 +19,13 @@ type Question = {
 export function QuizSection({
     videoId,
     questions,
-    previousScore
+    previousScore,
+    isUnlocked = true, // default to true for backwards compatibility just in case
 }: {
     videoId: string;
     questions: Question[];
     previousScore: { score: number, total: number } | null;
+    isUnlocked?: boolean;
 }) {
     const [answers, setAnswers] = useState<Record<string, string>>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -49,7 +50,7 @@ export function QuizSection({
                 responseText,
             }));
 
-            await submitAnswers(videoId, mockLearner.id, formattedAnswers);
+            await submitAnswers(videoId, formattedAnswers);
             setIsSuccess(true);
             setIsReviewMode(true);
         } catch (error) {
@@ -111,7 +112,18 @@ export function QuizSection({
     }
 
     return (
-        <Card>
+        <Card className="relative overflow-hidden">
+            {!isUnlocked && (
+                <div className="absolute inset-0 z-10 bg-slate-50/80 backdrop-blur-[2px] flex flex-col items-center justify-center p-6 text-center border border-dashed rounded-xl">
+                    <div className="h-12 w-12 rounded-full bg-slate-200 flex items-center justify-center mb-4">
+                        <Loader2 className="h-6 w-6 text-slate-500 animate-spin opacity-50" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-slate-800">Quiz Locked</h3>
+                    <p className="text-sm text-slate-600 mt-2">
+                        Please watch the video to completion to unlock the knowledge check.
+                    </p>
+                </div>
+            )}
             <CardHeader>
                 <CardTitle>Knowledge Check</CardTitle>
                 <CardDescription>Answer the following questions to complete this module.</CardDescription>

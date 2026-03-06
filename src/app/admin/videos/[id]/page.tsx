@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AddQuestionForm } from "@/components/admin/AddQuestionForm";
@@ -8,8 +8,16 @@ import { ArrowLeft, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { deleteVideo } from "@/app/actions/admin";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
 
 export default async function AdminVideoDetailsPage({ params }: { params: Promise<{ id: string }> }) {
+    const session = await getServerSession(authOptions);
+    // @ts-ignore
+    if (!session?.user || session.user.role !== "ADMIN") {
+        redirect("/");
+    }
+
     const { id } = await params;
 
     const video = await db.video.findUnique({
