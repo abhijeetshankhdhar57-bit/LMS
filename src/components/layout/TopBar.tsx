@@ -54,9 +54,6 @@ export function TopBar() {
                                         <span className="px-1.5 py-0.5 rounded text-[10px] font-bold tracking-wider bg-primary/20 text-primary uppercase">
                                             {userRole}
                                         </span>
-                                        <p className="text-xs leading-none text-muted-foreground truncate">
-                                            {session.user?.email}
-                                        </p>
                                     </div>
                                 </div>
                             </DropdownMenuLabel>
