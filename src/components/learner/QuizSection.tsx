@@ -72,16 +72,16 @@ export function QuizSection({
 
     if (isReviewMode && !isSuccess) {
         return (
-            <Card className="border-green-200 bg-green-50/30">
+            <Card className="border-green-900/50 bg-green-950/20">
                 <CardContent className="p-8 text-center space-y-4">
-                    <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                        <CheckCircle2 className="h-8 w-8 text-green-600" />
+                    <div className="mx-auto w-16 h-16 bg-green-900/40 rounded-full flex items-center justify-center mb-4 ring-1 ring-green-500/20">
+                        <CheckCircle2 className="h-8 w-8 text-green-400" />
                     </div>
-                    <h3 className="text-xl font-bold text-green-900">Module Completed!</h3>
-                    <p className="text-green-700">
+                    <h3 className="text-xl font-bold text-green-400">Module Completed!</h3>
+                    <p className="text-green-500/80">
                         You scored {previousScore?.score} out of {previousScore?.total}. Great job!
                     </p>
-                    <Button variant="outline" className="mt-4" onClick={() => {
+                    <Button variant="outline" className="mt-4 border-green-900/50 hover:bg-green-900/30 hover:text-green-300 text-green-400 bg-transparent" onClick={() => {
                         setIsReviewMode(false);
                         setAnswers({});
                     }}>
@@ -94,16 +94,16 @@ export function QuizSection({
 
     if (isSuccess) {
         return (
-            <Card className="border-green-200 bg-green-50/30">
+            <Card className="border-green-900/50 bg-green-950/20">
                 <CardContent className="p-8 text-center space-y-4">
-                    <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                        <CheckCircle2 className="h-8 w-8 text-green-600" />
+                    <div className="mx-auto w-16 h-16 bg-green-900/40 rounded-full flex items-center justify-center mb-4 ring-1 ring-green-500/20">
+                        <CheckCircle2 className="h-8 w-8 text-green-400" />
                     </div>
-                    <h3 className="text-xl font-bold text-green-900">Answers Submitted!</h3>
-                    <p className="text-green-700">
+                    <h3 className="text-xl font-bold text-green-400">Answers Submitted!</h3>
+                    <p className="text-green-500/80">
                         Your responses have been recorded successfully.
                     </p>
-                    <Button variant="outline" className="mt-4" onClick={() => window.location.href = '/'}>
+                    <Button variant="outline" className="mt-4 border-green-900/50 hover:bg-green-900/30 hover:text-green-300 text-green-400 bg-transparent" onClick={() => window.location.href = '/'}>
                         Back to Dashboard
                     </Button>
                 </CardContent>
@@ -114,12 +114,12 @@ export function QuizSection({
     return (
         <Card className="relative overflow-hidden">
             {!isUnlocked && (
-                <div className="absolute inset-0 z-10 bg-slate-50/80 backdrop-blur-[2px] flex flex-col items-center justify-center p-6 text-center border border-dashed rounded-xl">
-                    <div className="h-12 w-12 rounded-full bg-slate-200 flex items-center justify-center mb-4">
-                        <Loader2 className="h-6 w-6 text-slate-500 animate-spin opacity-50" />
+                <div className="absolute inset-0 z-10 bg-black/60 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center border border-white/10 rounded-xl">
+                    <div className="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center mb-4 ring-1 ring-white/5">
+                        <Loader2 className="h-6 w-6 text-white/50 animate-spin" />
                     </div>
-                    <h3 className="text-lg font-semibold text-slate-800">Quiz Locked</h3>
-                    <p className="text-sm text-slate-600 mt-2">
+                    <h3 className="text-lg font-semibold text-white">Quiz Locked</h3>
+                    <p className="text-sm text-muted-foreground mt-2">
                         Please watch the video to completion to unlock the knowledge check.
                     </p>
                 </div>
@@ -141,9 +141,9 @@ export function QuizSection({
                                 onValueChange={(val) => handleOptionChange(q.id, val)}
                             >
                                 {JSON.parse(q.options).map((opt: string, i: number) => (
-                                    <div key={i} className="flex items-center space-x-2 bg-slate-50 p-3 rounded-md border hover:bg-slate-100 transition-colors">
+                                    <div key={i} className="flex items-center space-x-2 bg-black/20 p-3 rounded-md border border-white/5 hover:bg-white/5 transition-colors">
                                         <RadioGroupItem value={opt} id={`${q.id}-${i}`} />
-                                        <Label htmlFor={`${q.id}-${i}`} className="flex-grow cursor-pointer">{opt}</Label>
+                                        <Label htmlFor={`${q.id}-${i}`} className="flex-grow cursor-pointer text-white/90">{opt}</Label>
                                     </div>
                                 ))}
                             </RadioGroup>
