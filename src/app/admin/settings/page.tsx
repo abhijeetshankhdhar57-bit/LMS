@@ -4,6 +4,8 @@ import { authOptions } from "@/lib/auth";
 import { Copy, CheckCircle2, XCircle, Shield, Webhook, HardDrive } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminSettingsPage() {
     const session = await getServerSession(authOptions);
 
