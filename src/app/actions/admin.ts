@@ -114,3 +114,17 @@ export async function createQuestion(formData: FormData) {
 
     revalidatePath(`/admin/videos/${videoId}`);
 }
+
+export async function updateVideoBanner(videoId: string, bannerUrl: string) {
+    await requireAdmin();
+
+    await db.video.update({
+        where: { id: videoId },
+        data: { bannerUrl },
+    });
+
+    revalidatePath(`/admin/videos/${videoId}`);
+    revalidatePath(`/admin/videos`);
+    revalidatePath(`/courses`);
+    revalidatePath(`/courses/${videoId}`);
+}

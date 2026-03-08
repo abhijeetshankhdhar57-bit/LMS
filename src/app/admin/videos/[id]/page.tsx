@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AddQuestionForm } from "@/components/admin/AddQuestionForm";
+import { UpdateBannerForm } from "@/components/admin/UpdateBannerForm";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { ArrowLeft, Trash2 } from "lucide-react";
 import Link from "next/link";
@@ -74,6 +75,8 @@ export default async function AdminVideoDetailsPage({ params }: { params: Promis
                                     </a>
                                 </div>
                             )}
+
+                            <UpdateBannerForm videoId={video.id} currentBanner={video.bannerUrl} />
                         </CardContent>
                     </Card>
 
