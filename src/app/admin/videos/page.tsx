@@ -38,7 +38,7 @@ export default async function AdminVideosPage() {
             </div>
 
             {videos.length === 0 ? (
-                <div className="flex flex-col items-center justify-center p-12 border border-dashed rounded-lg bg-white">
+                <div className="flex flex-col items-center justify-center p-12 border border-dashed border-white/20 rounded-lg bg-black/20">
                     <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                         <Video className="h-6 w-6 text-primary" />
                     </div>
@@ -53,9 +53,13 @@ export default async function AdminVideosPage() {
             ) : (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {videos.map((video) => (
-                        <Card key={video.id} className="overflow-hidden flex flex-col">
-                            <div className="aspect-video bg-slate-100 flex items-center justify-center border-b">
-                                <Video className="h-10 w-10 text-slate-300" />
+                        <Card key={video.id} className="flex flex-col overflow-hidden hover:shadow-[0_0_25px_rgba(100,60,255,0.15)] transition-shadow border-white/10 bg-card/40 backdrop-blur-sm group">
+                            <div className="aspect-video bg-black/40 border-b border-white/5 flex items-center justify-center relative overflow-hidden">
+                                {video.bannerUrl ? (
+                                    <img src={video.bannerUrl} alt={video.title} className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                                ) : (
+                                    <Video className="h-10 w-10 text-white/20" />
+                                )}
                             </div>
                             <CardHeader className="pb-2 flex-grow">
                                 <CardTitle className="text-lg line-clamp-1">{video.title}</CardTitle>
@@ -63,7 +67,7 @@ export default async function AdminVideosPage() {
                                     {video.description || "No description provided."}
                                 </CardDescription>
                             </CardHeader>
-                            <CardContent className="pt-2 text-sm text-muted-foreground flex justify-between items-center border-t mt-auto">
+                            <CardContent className="pt-3 pb-3 text-sm text-muted-foreground flex justify-between items-center border-t border-white/5 bg-black/20 mt-auto">
                                 <span>{video._count.questions} questions</span>
                                 <Link href={`/admin/videos/${video.id}`}>
                                     <Button variant="ghost" size="sm" className="text-primary hover:text-primary">
