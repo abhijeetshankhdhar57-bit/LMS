@@ -62,7 +62,10 @@ export function Sidebar() {
             <nav className="flex-1 space-y-2 p-4 pt-6">
                 {links.map((link) => {
                     const Icon = link.icon;
-                    const isActive = pathname === link.href || pathname.startsWith(`${link.href}/`);
+                    const isRoot = link.href === "/" || link.href === "/admin";
+                    const isActive = isRoot
+                        ? pathname === link.href
+                        : (pathname === link.href || pathname.startsWith(`${link.href}/`));
 
                     return (
                         <Link
