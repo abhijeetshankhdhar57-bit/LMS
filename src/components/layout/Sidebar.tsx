@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { LayoutDashboard, PlayCircle, BookOpen, Settings, Users } from "lucide-react";
+import { LayoutDashboard, PlayCircle, BookOpen, Settings, Users, Orbit } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -45,15 +45,9 @@ export function Sidebar() {
         >
             <div className="flex h-16 items-center border-b border-white/10 px-6 justify-between relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent opacity-50 pointer-events-none" />
-                {/* CSS Magic: Invert makes dark logo white. Grayscale+Contrast+Brightness crushes the gray checkers to black. Screen blends black into true transparency. */}
-                <div className="z-10 w-[120px] mix-blend-screen overflow-hidden">
-                    <Image
-                        src="/juspay-logo-transparent.png"
-                        alt="Juspay"
-                        width={120}
-                        height={40}
-                        className="object-contain filter invert grayscale contrast-[200%] brightness-[80%]"
-                    />
+                <div className="flex items-center gap-2 z-10 w-[110px]">
+                    <Orbit className="w-6 h-6 text-white" strokeWidth={3} />
+                    <span className="text-xl font-bold tracking-tight text-white">JUSPAY</span>
                 </div>
                 {session?.user && (
                     <span className="z-10 text-[10px] uppercase font-bold tracking-widest text-primary bg-primary/10 px-2 py-1 rounded shadow-[0_0_10px_rgba(100,60,255,0.2)] border border-primary/30">
