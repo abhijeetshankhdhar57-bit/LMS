@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { LayoutDashboard, PlayCircle, BookOpen, Settings } from "lucide-react";
+import { LayoutDashboard, PlayCircle, BookOpen, Settings, Users } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -25,6 +25,7 @@ export function Sidebar() {
 
     const adminLinks = [
         { name: "Admin Dashboard", href: "/admin", icon: LayoutDashboard },
+        { name: "User Directory", href: "/admin/users", icon: Users },
         { name: "Manage Videos", href: "/admin/videos", icon: PlayCircle },
         { name: "Settings", href: "/admin/settings", icon: Settings },
     ];

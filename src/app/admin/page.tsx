@@ -4,6 +4,7 @@ import { Users, Video, FileText, BarChart3 } from "lucide-react";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { AnalyticsChart } from "@/components/admin/AnalyticsChart";
 
 export default async function AdminDashboard() {
     const session = await getServerSession(authOptions);
@@ -11,7 +12,7 @@ export default async function AdminDashboard() {
     if (!session?.user || session.user.role !== "ADMIN") {
         redirect("/");
     }
-    const [videoCount, learnerCount, questionCount, scoreCount, scores, learners] = await Promise.all([
+    const [videoCount, learnerCount, questionCount, scoreCount, scores, learners, videos] = await Promise.all([
         db.video.count(),
         db.user.count({ where: { role: "LEARNER" } }),
         db.question.count(),
@@ -23,8 +24,20 @@ export default async function AdminDashboard() {
                 scores: true
             },
             orderBy: { name: 'asc' }
+        }),
+        db.video.findMany({
+            include: {
+                _count: {
+                    select: { scores: true }
+                }
+            }
         })
     ]);
+
+    const chartData = videos.map(video => ({
+        name: video.title.length > 20 ? video.title.substring(0, 20) + '...' : video.title,
+        completed: video._count.scores
+    }));
 
     let averageScore = 0;
     if (scores.length > 0) {
@@ -85,7 +98,19 @@ export default async function AdminDashboard() {
                 })}
             </div>
 
-            <div className="mt-12">
+            <div className="mt-8 grid gap-6 lg:grid-cols-2">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Course Popularity</CardTitle>
+                        <p className="text-sm text-muted-foreground">Number of completed learners per module.</p>
+                    </CardHeader>
+                    <CardContent>
+                        <AnalyticsChart data={chartData} />
+                    </CardContent>
+                </Card>
+            </div>
+
+            <div className="mt-8">
                 <h2 className="text-2xl font-bold mb-6">Employee Progress Report</h2>
                 <Card>
                     <CardHeader>
