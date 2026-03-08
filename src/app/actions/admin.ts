@@ -7,8 +7,6 @@ import { authOptions } from "@/lib/auth";
 import { Resend } from "resend";
 import { CourseAssignmentEmail } from "@/components/emails/CourseAssignment";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 async function requireAdmin() {
     const session = await getServerSession(authOptions);
     // @ts-ignore
@@ -54,6 +52,9 @@ export async function createVideo(formData: FormData) {
             if (learnerEmails.length > 0) {
                 // Determine the base URL for the email link
                 const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
+
+                // Lazy initialize Resend to avoid Next.js module evaluation crashes
+                const resend = new Resend(process.env.RESEND_API_KEY);
 
                 // Blast the beautifully formatted React Email to all learners
                 await resend.emails.send({
