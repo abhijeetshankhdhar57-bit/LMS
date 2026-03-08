@@ -4,6 +4,10 @@ import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
+import { Resend } from "resend";
+import { CourseAssignmentEmail } from "@/components/emails/CourseAssignment";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 async function requireAdmin() {
     const session = await getServerSession(authOptions);
@@ -34,6 +38,40 @@ export async function createVideo(formData: FormData) {
             isMandatory,
         },
     });
+
+    // --- PHASE 9: AUTOMATED NOTIFICATIONS ---
+    // If the Admin marks the course as Mandatory, notify all Learners!
+    if (isMandatory && process.env.RESEND_API_KEY) {
+        try {
+            // Find all users with the "LEARNER" role
+            const learners = await db.user.findMany({
+                where: { role: "LEARNER" },
+                select: { email: true }
+            });
+
+            const learnerEmails = learners.map(l => l.email).filter(Boolean) as string[];
+
+            if (learnerEmails.length > 0) {
+                // Determine the base URL for the email link
+                const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
+
+                // Blast the beautifully formatted React Email to all learners
+                await resend.emails.send({
+                    from: "Juspay LMS <onboarding@resend.dev>", // "onboarding@resend.dev" works for free-tier testing. Upgrade domain in prod.
+                    to: learnerEmails,
+                    subject: "Action Required: New Mandatory Training Module",
+                    react: CourseAssignmentEmail({
+                        courseTitle: title,
+                        courseUrl: `${baseUrl}/courses/${video.id}`,
+                    }) as React.ReactElement,
+                });
+                console.log(`Successfully dispatched mandatory notification to ${learnerEmails.length} learners.`);
+            }
+        } catch (emailError) {
+            console.error("Failed to trigger Resend assignment emails:", emailError);
+            // We shouldn't throw here; the video was created successfully, so we just log the email failure.
+        }
+    }
 
     revalidatePath("/admin/videos");
     revalidatePath("/");
