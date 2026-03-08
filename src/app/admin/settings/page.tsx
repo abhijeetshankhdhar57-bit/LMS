@@ -11,6 +11,10 @@ export default async function AdminSettingsPage() {
     const hasBlob = !!process.env.BLOB_READ_WRITE_TOKEN;
     const hasResend = !!process.env.RESEND_API_KEY;
 
+    // Capitalize name
+    const userName = session?.user?.name || "Unknown";
+    const capitalizedName = userName.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+
     return (
         <div className="p-8 max-w-4xl mx-auto space-y-8 animate-in fade-in duration-500">
             <div>
@@ -32,7 +36,7 @@ export default async function AdminSettingsPage() {
                     <CardContent className="space-y-4">
                         <div className="space-y-1 p-3 bg-black/20 rounded-lg border border-white/5">
                             <p className="text-sm font-medium text-muted-foreground">Admin Name</p>
-                            <p className="font-medium">{session?.user?.name || "Unknown"}</p>
+                            <p className="font-medium">{capitalizedName}</p>
                         </div>
                         <div className="space-y-1 p-3 bg-black/20 rounded-lg border border-white/5">
                             <p className="text-sm font-medium text-muted-foreground">Registered Email</p>
