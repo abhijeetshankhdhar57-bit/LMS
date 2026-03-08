@@ -37,7 +37,7 @@ export default async function AdminUsersDirectory() {
                 <CardContent>
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm text-left">
-                            <thead className="text-xs uppercase bg-slate-100/50">
+                            <thead className="text-xs uppercase bg-primary/20 text-white/80">
                                 <tr>
                                     <th className="px-6 py-3 font-medium">Name</th>
                                     <th className="px-6 py-3 font-medium">Email</th>
@@ -49,7 +49,7 @@ export default async function AdminUsersDirectory() {
                             <tbody className="divide-y">
                                 {users.map((u) => {
                                     return (
-                                        <tr key={u.id} className="hover:bg-slate-50/50">
+                                        <tr key={u.id} className="hover:bg-white/5 border-b border-white/5 transition-colors">
                                             <td className="px-6 py-4 font-medium flex items-center gap-3">
                                                 {u.image ? (
                                                     <img src={u.image} alt={u.name || "User"} className="w-8 h-8 rounded-full" />

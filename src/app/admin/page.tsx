@@ -127,7 +127,7 @@ export default async function AdminDashboard() {
                         ) : (
                             <div className="overflow-x-auto">
                                 <table className="w-full text-sm text-left">
-                                    <thead className="text-xs uppercase bg-slate-100/50">
+                                    <thead className="text-xs uppercase bg-primary/20 text-white/80">
                                         <tr>
                                             <th className="px-6 py-3 font-medium">Employee Name</th>
                                             <th className="px-6 py-3 font-medium">Email</th>
@@ -144,7 +144,7 @@ export default async function AdminDashboard() {
                                                 : 0;
 
                                             return (
-                                                <tr key={learner.id} className="hover:bg-slate-50/50">
+                                                <tr key={learner.id} className="hover:bg-white/5 border-b border-white/5 transition-colors">
                                                     <td className="px-6 py-4 font-medium flex items-center gap-3">
                                                         {learner.image ? (
                                                             <img src={learner.image} alt={learner.name || "User"} className="w-8 h-8 rounded-full" />
@@ -180,7 +180,7 @@ export default async function AdminDashboard() {
                                                                 In Progress
                                                             </span>
                                                         ) : (
-                                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800">
+                                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-white/10 text-white/50">
                                                                 Not Started
                                                             </span>
                                                         )}
