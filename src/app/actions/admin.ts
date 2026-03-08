@@ -2,6 +2,7 @@
 
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { Resend } from "resend";
@@ -90,6 +91,8 @@ export async function deleteVideo(id: string) {
 
     revalidatePath("/admin/videos");
     revalidatePath("/");
+
+    redirect("/admin/videos");
 }
 
 export async function createQuestion(formData: FormData) {
