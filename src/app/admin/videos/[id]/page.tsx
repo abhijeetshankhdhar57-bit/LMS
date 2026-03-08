@@ -63,7 +63,7 @@ export default async function AdminVideoDetailsPage({ params }: { params: Promis
                             <CardTitle>Video Preview</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                            <VideoPlayer url={video.url} />
+                            <VideoPlayer url={video.url} bannerUrl={video.bannerUrl} />
                             {video.driveUrl && (
                                 <div className="pt-4 border-t border-white/5">
                                     <h4 className="font-semibold text-sm mb-2 text-muted-foreground">Attached Material</h4>

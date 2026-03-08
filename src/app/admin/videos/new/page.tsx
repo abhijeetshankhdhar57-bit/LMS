@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { createVideo } from "@/app/actions/admin";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, UploadCloud, Link as LinkIcon } from "lucide-react";
+import { Loader2, UploadCloud, Link as LinkIcon, Image as ImageIcon } from "lucide-react";
 import { upload } from "@vercel/blob/client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -22,6 +22,7 @@ export default function NewVideoPage() {
 
     const [videoFile, setVideoFile] = useState<File | null>(null);
     const [docFile, setDocFile] = useState<File | null>(null);
+    const [bannerFile, setBannerFile] = useState<File | null>(null);
 
     async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -47,6 +48,15 @@ export default function NewVideoPage() {
                     handleUploadUrl: '/api/upload',
                 });
                 formData.set("driveUrl", docBlob.url);
+            }
+
+            // Handle Banner Upload
+            if (bannerFile) {
+                const bannerBlob = await upload(bannerFile.name, bannerFile, {
+                    access: 'public',
+                    handleUploadUrl: '/api/upload',
+                });
+                formData.set("bannerUrl", bannerBlob.url);
             }
 
             const video = await createVideo(formData);
@@ -164,6 +174,27 @@ export default function NewVideoPage() {
                                     </div>
                                 </TabsContent>
                             </Tabs>
+                        </div>
+
+                        {/* Video Banner Configuration */}
+                        <div className="space-y-4 p-5 rounded-xl border border-white/5 bg-black/20">
+                            <h3 className="font-semibold text-lg flex items-center gap-2">
+                                <ImageIcon className="w-5 h-5 text-pink-400" /> Video Thumbnail Banner <span className="text-muted-foreground text-sm font-normal">(Optional)</span>
+                            </h3>
+
+                            <div className="relative group border-2 border-dashed border-white/20 rounded-xl p-6 text-center hover:border-pink-400/50 transition-colors bg-white/5">
+                                <input
+                                    type="file"
+                                    accept=".jpg,.jpeg,.png,.webp"
+                                    onChange={(e) => setBannerFile(e.target.files?.[0] || null)}
+                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                />
+                                {bannerFile ? (
+                                    <p className="font-semibold text-pink-400">{bannerFile.name}</p>
+                                ) : (
+                                    <p className="text-sm text-muted-foreground">Click or drag a 16:9 image to use as the video cover art</p>
+                                )}
+                            </div>
                         </div>
 
                         {/* Settings */}

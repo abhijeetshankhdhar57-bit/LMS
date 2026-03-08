@@ -32,6 +32,7 @@ model Video {
   title       String
   description String?
   url         String
+  bannerUrl   String?
   driveUrl    String?    // Optional link for Google Drive, PPT, PDF, etc.
   isMandatory Boolean    @default(false)
   questions   Question[]

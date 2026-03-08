@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import YouTube from "react-youtube";
 
-export function VideoPlayer({ url, onEnded }: { url: string; onEnded?: () => void }) {
+export function VideoPlayer({ url, bannerUrl, onEnded }: { url: string; bannerUrl?: string | null; onEnded?: () => void }) {
     const [videoId, setVideoId] = useState<string | null>(null);
 
     useEffect(() => {
@@ -31,6 +31,7 @@ export function VideoPlayer({ url, onEnded }: { url: string; onEnded?: () => voi
                     className="w-full h-full object-contain"
                     onEnded={onEnded}
                     preload="metadata"
+                    poster={bannerUrl || undefined}
                 />
             </div>
         );

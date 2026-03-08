@@ -20,7 +20,7 @@ export function CourseInteractiveClient({
         <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-8">
                 <div className="rounded-xl overflow-hidden border shadow-sm">
-                    <VideoPlayer url={video.url} onEnded={() => setVideoCompleted(true)} />
+                    <VideoPlayer url={video.url} bannerUrl={video.bannerUrl} onEnded={() => setVideoCompleted(true)} />
                 </div>
 
                 <div className="prose max-w-none">
