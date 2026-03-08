@@ -72,7 +72,7 @@ export function AddQuestionForm({ videoId }: { videoId: string }) {
             </div>
 
             {type === "MCQ" && (
-                <div className="space-y-3 bg-slate-50 p-4 rounded-md border">
+                <div className="space-y-3 bg-black/20 p-4 rounded-md border border-white/5">
                     <Label>Options</Label>
                     {options.map((option, index) => (
                         <div key={index} className="flex gap-2 items-center">
