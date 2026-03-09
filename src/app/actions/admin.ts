@@ -133,3 +133,13 @@ export async function updateVideoBanner(videoId: string, bannerUrl: string) {
     revalidatePath(`/courses`);
     revalidatePath(`/courses/${videoId}`);
 }
+
+export async function deleteQuestion(questionId: string, videoId: string) {
+    await requireAdmin();
+
+    await db.question.delete({
+        where: { id: questionId },
+    });
+
+    revalidatePath(`/admin/videos/${videoId}`);
+}

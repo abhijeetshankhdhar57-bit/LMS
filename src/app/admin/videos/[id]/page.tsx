@@ -8,7 +8,7 @@ import { VideoPlayer } from "@/components/VideoPlayer";
 import { ArrowLeft, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { deleteVideo } from "@/app/actions/admin";
+import { deleteVideo, deleteQuestion } from "@/app/actions/admin";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 
@@ -95,7 +95,17 @@ export default async function AdminVideoDetailsPage({ params }: { params: Promis
                                             <span className="font-medium text-sm">
                                                 {idx + 1}. {q.text}
                                             </span>
-                                            <Badge variant="secondary" className="text-[10px]">{q.type === 'MCQ' ? 'Multiple Choice' : 'Short Answer'}</Badge>
+                                            <div className="flex items-center gap-2">
+                                                <Badge variant="secondary" className="text-[10px]">{q.type === 'MCQ' ? 'Multiple Choice' : 'Short Answer'}</Badge>
+                                                <form action={async () => {
+                                                    "use server";
+                                                    await deleteQuestion(q.id, video.id);
+                                                }}>
+                                                    <Button variant="ghost" size="icon" className="h-6 w-6 text-red-500 hover:text-red-400 hover:bg-red-500/10">
+                                                        <Trash2 className="h-3 w-3" />
+                                                    </Button>
+                                                </form>
+                                            </div>
                                         </div>
                                         {q.type === "MCQ" && (
                                             <ul className="mt-2 text-sm text-muted-foreground space-y-1 list-disc list-inside ml-2">

@@ -9,6 +9,8 @@ import { createQuestion } from "@/app/actions/admin";
 import { Plus, X, Loader2 } from "lucide-react";
 
 export function AddQuestionForm({ videoId }: { videoId: string }) {
+    const [text, setText] = useState("");
+    const [points, setPoints] = useState("1");
     const [type, setType] = useState<"MCQ" | "SHORT_ANSWER">("MCQ");
     const [options, setOptions] = useState<string[]>(["", ""]);
     const [correctIndex, setCorrectIndex] = useState<number>(0);
@@ -26,8 +28,10 @@ export function AddQuestionForm({ videoId }: { videoId: string }) {
         e.preventDefault();
         setIsSubmitting(true);
 
-        const formData = new FormData(e.currentTarget);
+        const formData = new FormData();
         formData.append("videoId", videoId);
+        formData.append("text", text);
+        formData.append("points", points);
         formData.append("type", type);
 
         if (type === "MCQ") {
@@ -41,7 +45,8 @@ export function AddQuestionForm({ videoId }: { videoId: string }) {
 
         try {
             await createQuestion(formData);
-            e.currentTarget.reset();
+            setText("");
+            setPoints("1");
             setType("MCQ");
             setOptions(["", ""]);
             setCorrectIndex(0);
@@ -56,7 +61,7 @@ export function AddQuestionForm({ videoId }: { videoId: string }) {
         <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
                 <Label htmlFor="text">Question Text</Label>
-                <Input id="text" name="text" placeholder="e.g. What is the main topic?" required />
+                <Input id="text" name="text" value={text} onChange={(e) => setText(e.target.value)} placeholder="e.g. What is the main topic?" required />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -74,7 +79,7 @@ export function AddQuestionForm({ videoId }: { videoId: string }) {
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="points">Points</Label>
-                    <Input id="points" name="points" type="number" min="1" defaultValue="1" required />
+                    <Input id="points" name="points" value={points} onChange={(e) => setPoints(e.target.value)} type="number" min="1" required />
                 </div>
             </div>
 
