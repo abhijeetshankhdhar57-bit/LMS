@@ -34,7 +34,7 @@ export default function NewVideoPage() {
             // Handle Video Upload
             if (videoMode === "upload") {
                 if (!videoFile) throw new Error("Please select a video file to upload.");
-                const videoBlob = await upload(videoFile.name, videoFile, {
+                const videoBlob = await upload(`${Date.now()}-${videoFile.name}`, videoFile, {
                     access: 'public',
                     handleUploadUrl: '/api/upload',
                 });
@@ -43,7 +43,7 @@ export default function NewVideoPage() {
 
             // Handle Document Upload
             if (docMode === "upload" && docFile) {
-                const docBlob = await upload(docFile.name, docFile, {
+                const docBlob = await upload(`${Date.now()}-${docFile.name}`, docFile, {
                     access: 'public',
                     handleUploadUrl: '/api/upload',
                 });
@@ -52,7 +52,7 @@ export default function NewVideoPage() {
 
             // Handle Banner Upload
             if (bannerFile) {
-                const bannerBlob = await upload(bannerFile.name, bannerFile, {
+                const bannerBlob = await upload(`${Date.now()}-${bannerFile.name}`, bannerFile, {
                     access: 'public',
                     handleUploadUrl: '/api/upload',
                 });

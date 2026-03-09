@@ -16,7 +16,7 @@ export function UpdateBannerForm({ videoId, currentBanner }: { videoId: string, 
 
         setIsSubmitting(true);
         try {
-            const bannerBlob = await upload(file.name, file, {
+            const bannerBlob = await upload(`${Date.now()}-${file.name}`, file, {
                 access: 'public',
                 handleUploadUrl: '/api/upload',
             });
