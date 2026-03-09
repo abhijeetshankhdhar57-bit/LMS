@@ -111,13 +111,15 @@ export function Sidebar() {
                 </div>
             )}
 
-            <div className="p-4 border-t border-white/10">
-                <div className="rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 p-4 border border-white/10 relative overflow-hidden">
-                    <div className="absolute -top-10 -right-10 w-24 h-24 bg-primary/40 blur-2xl rounded-full pointer-events-none" />
-                    <p className="text-xs font-medium text-white/80">Premium LMS Experience</p>
-                    <p className="text-[10px] text-white/50 mt-1">Design V2</p>
+            {activeRole === "ADMIN" && (
+                <div className="p-4 border-t border-white/10 mt-auto">
+                    <div className="rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 p-4 border border-white/10 relative overflow-hidden">
+                        <div className="absolute -top-10 -right-10 w-24 h-24 bg-primary/40 blur-2xl rounded-full pointer-events-none" />
+                        <p className="text-xs font-medium text-white/80">Premium LMS Experience</p>
+                        <p className="text-[10px] text-white/50 mt-1">Design V2</p>
+                    </div>
                 </div>
-            </div>
+            )}
         </motion.div>
     );
 }
