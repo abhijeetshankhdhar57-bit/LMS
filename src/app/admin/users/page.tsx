@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { SendRemindersButton } from "./SendRemindersButton";
 
 export default async function AdminUsersDirectory() {
     const session = await getServerSession(authOptions);
@@ -28,6 +29,7 @@ export default async function AdminUsersDirectory() {
         <div className="p-8">
             <div className="flex items-center justify-between mb-8">
                 <h1 className="text-3xl font-bold">User Directory</h1>
+                <SendRemindersButton />
             </div>
 
             <Card>

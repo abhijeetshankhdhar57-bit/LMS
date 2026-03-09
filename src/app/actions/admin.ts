@@ -7,6 +7,8 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { Resend } from "resend";
 import { CourseAssignmentEmail } from "@/components/emails/CourseAssignment";
+import ReminderEmail from "@/components/emails/ReminderEmail";
+import React from "react";
 
 async function requireAdmin() {
     const session = await getServerSession(authOptions);
@@ -166,4 +168,54 @@ export async function updateQuestion(questionId: string, videoId: string, formDa
     });
 
     revalidatePath(`/admin/videos/${videoId}`);
+}
+
+const resend = new Resend(process.env.RESEND_API_KEY!);
+
+export async function sendReminders() {
+    await requireAdmin();
+
+    const mandatoryVideos = await db.video.findMany({
+        where: { isMandatory: true },
+        select: { id: true, title: true }
+    });
+
+    if (mandatoryVideos.length === 0) return { success: true, count: 0 };
+
+    // Find all users (can filter by LEARNER if roles are strict)
+    const users = await db.user.findMany({
+        include: {
+            scores: {
+                select: { videoId: true }
+            }
+        }
+    });
+
+    let emailsSent = 0;
+
+    for (const user of users) {
+        if (!user.email) continue;
+
+        const completedVideoIds = new Set(user.scores.map(s => s.videoId));
+        const missingModules = mandatoryVideos
+            .filter(v => !completedVideoIds.has(v.id))
+            .map(v => v.title);
+
+        if (missingModules.length > 0) {
+            try {
+                // @ts-ignore
+                await resend.emails.send({
+                    from: "Juspay LMS <onboarding@resend.dev>", // Warning: resend.dev only allows sending to the verified dev email address. To send to real users, a custom domain must be verified on Resend.
+                    to: user.email,
+                    subject: "Action Required: Complete your Mandatory Training Modules",
+                    react: ReminderEmail({ userName: user.name || "Team", missingModules }) as React.ReactElement,
+                });
+                emailsSent++;
+            } catch (e) {
+                console.error("Failed to send email to", user.email, e);
+            }
+        }
+    }
+
+    return { success: true, count: emailsSent };
 }
