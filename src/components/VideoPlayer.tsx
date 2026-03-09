@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import YouTube from "react-youtube";
 
 export function VideoPlayer({ url, bannerUrl, onEnded }: { url: string; bannerUrl?: string | null; onEnded?: () => void }) {
     const [videoId, setVideoId] = useState<string | null>(null);
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const ytPlayerRef = useRef<any>(null);
 
     useEffect(() => {
         // Basic YouTube URL parsing
@@ -22,12 +24,38 @@ export function VideoPlayer({ url, bannerUrl, onEnded }: { url: string; bannerUr
     // Handle direct MP4 or Vercel Blob URLs natively
     const isNativeVideo = url.endsWith(".mp4") || url.includes("blob.vercel-storage.com");
 
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            // Ignore if user is currently typing inside an input field
+            if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+
+            if (e.code === "Space") {
+                e.preventDefault(); // Prevent page scroll
+
+                if (isNativeVideo && videoRef.current) {
+                    if (videoRef.current.paused) videoRef.current.play();
+                    else videoRef.current.pause();
+                } else if (!isNativeVideo && ytPlayerRef.current) {
+                    const state = ytPlayerRef.current.getPlayerState();
+                    // YouTube State 1 = Playing. If playing, pause. Else, play.
+                    if (state === 1) ytPlayerRef.current.pauseVideo();
+                    else ytPlayerRef.current.playVideo();
+                }
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [isNativeVideo]);
+
     if (isNativeVideo) {
         return (
             <div className="w-full aspect-video rounded-md overflow-hidden bg-black shadow-lg border border-white/10 ring-1 ring-white/5">
                 <video
+                    ref={videoRef}
                     src={url}
                     controls
+                    autoPlay
                     className="w-full h-full object-contain"
                     onEnded={onEnded}
                     preload="metadata"
@@ -54,7 +82,8 @@ export function VideoPlayer({ url, bannerUrl, onEnded }: { url: string; bannerUr
         <div className="w-full aspect-video rounded-md overflow-hidden bg-black">
             <YouTube
                 videoId={videoId}
-                opts={{ width: "100%", height: "100%", playerVars: { autoplay: 0 } }}
+                opts={{ width: "100%", height: "100%", playerVars: { autoplay: 1 } }}
+                onReady={(event) => { ytPlayerRef.current = event.target; }}
                 onEnd={onEnded}
                 className="w-full h-full"
                 iframeClassName="w-full h-full object-cover"
