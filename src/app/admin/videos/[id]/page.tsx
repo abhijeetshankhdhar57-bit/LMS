@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { deleteVideo, deleteQuestion } from "@/app/actions/admin";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
+import { EditQuestionDialog } from "@/components/admin/EditQuestionDialog";
 
 export default async function AdminVideoDetailsPage({ params }: { params: Promise<{ id: string }> }) {
     const session = await getServerSession(authOptions);
@@ -97,6 +98,7 @@ export default async function AdminVideoDetailsPage({ params }: { params: Promis
                                             </span>
                                             <div className="flex items-center gap-2">
                                                 <Badge variant="secondary" className="text-[10px]">{q.type === 'MCQ' ? 'Multiple Choice' : 'Short Answer'}</Badge>
+                                                <EditQuestionDialog question={q} />
                                                 <form action={async () => {
                                                     "use server";
                                                     await deleteQuestion(q.id, video.id);

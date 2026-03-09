@@ -143,3 +143,27 @@ export async function deleteQuestion(questionId: string, videoId: string) {
 
     revalidatePath(`/admin/videos/${videoId}`);
 }
+
+export async function updateQuestion(questionId: string, videoId: string, formData: FormData) {
+    await requireAdmin();
+
+    const text = formData.get("text") as string;
+    const type = formData.get("type") as "MCQ" | "SHORT_ANSWER";
+    const optionsRaw = formData.get("options") as string; // JSON string
+    const correctOption = formData.get("correctOption") as string | null;
+    const pointsRaw = formData.get("points") as string;
+    const points = parseInt(pointsRaw) || 1;
+
+    await db.question.update({
+        where: { id: questionId },
+        data: {
+            text,
+            type,
+            points,
+            options: optionsRaw || "[]",
+            correctOption,
+        },
+    });
+
+    revalidatePath(`/admin/videos/${videoId}`);
+}
