@@ -115,9 +115,6 @@ export function QuizSection({
         <Card className="relative overflow-hidden">
             {!isUnlocked && (
                 <div className="absolute inset-0 z-10 bg-black/60 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center border border-white/10 rounded-xl">
-                    <div className="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center mb-4 ring-1 ring-white/5">
-                        <Loader2 className="h-6 w-6 text-white/50 animate-spin" />
-                    </div>
                     <h3 className="text-lg font-semibold text-white">Quiz Locked</h3>
                     <p className="text-sm text-muted-foreground mt-2">
                         Please watch the video to completion to unlock the knowledge check.
