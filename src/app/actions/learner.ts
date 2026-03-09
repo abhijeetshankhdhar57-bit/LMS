@@ -20,18 +20,19 @@ export async function submitAnswers(
 
     if (!video) throw new Error("Video not found");
 
-    let correctCount = 0;
+    const maxScore = video.questions.reduce((sum, q) => sum + (q.points || 1), 0);
+    let totalScore = 0;
 
-    // Save answers and calculate score if possible (only simple exact match for now)
+    // Save answers and calculate score computationally
     for (const answer of answers) {
         const question = video.questions.find(q => q.id === answer.questionId);
-        let isCorrect = null;
+        let isCorrect: boolean | null = null;
 
-        if (question && question.type === "MCQ") {
-            // Very basic match for MCQ: Assuming responseText is exactly one of the options.
-            // In a real app, you'd mark which option was correct in the DB. For this simple LMS,
-            // we'll just store the answer. If you want auto-grading, the schema needs `correctOption`.
-            // Given the schema doesn't have correctOption, isCorrect will remain null for manual review.
+        if (question && question.type === "MCQ" && question.correctOption) {
+            isCorrect = answer.responseText === question.correctOption;
+            if (isCorrect) {
+                totalScore += (question.points || 1);
+            }
         }
 
         // Upsert answer to allow re-submission
@@ -54,8 +55,6 @@ export async function submitAnswers(
             }
         });
 
-        // Dummy point logic: every answered question gives 1 point for simplicity since no correct answer is defined.
-        correctCount++;
     }
 
     // Update Score
@@ -67,15 +66,15 @@ export async function submitAnswers(
             }
         },
         update: {
-            score: correctCount,
-            total: video.questions.length,
+            score: totalScore,
+            total: maxScore,
             completedAt: new Date()
         },
         create: {
             userId,
             videoId,
-            score: correctCount,
-            total: video.questions.length,
+            score: totalScore,
+            total: maxScore,
         }
     });
 

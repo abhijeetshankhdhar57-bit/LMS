@@ -102,6 +102,7 @@ export async function createQuestion(formData: FormData) {
     const text = formData.get("text") as string;
     const type = formData.get("type") as "MCQ" | "SHORT_ANSWER";
     const optionsRaw = formData.get("options") as string; // JSON string
+    const correctOption = formData.get("correctOption") as string | null;
     const pointsRaw = formData.get("points") as string;
     const points = parseInt(pointsRaw) || 1;
 
@@ -112,6 +113,7 @@ export async function createQuestion(formData: FormData) {
             type,
             points,
             options: optionsRaw || "[]",
+            correctOption,
         },
     });
 

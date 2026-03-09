@@ -49,6 +49,7 @@ model Question {
   type      QuestionType
   points    Int          @default(1)
   options   String     // For MCQ, store array of options as JSON string
+  correctOption String? // Store exact text of correct option
   answers   Answer[]
   createdAt DateTime     @default(now())
 }

@@ -11,6 +11,7 @@ import { Plus, X, Loader2 } from "lucide-react";
 export function AddQuestionForm({ videoId }: { videoId: string }) {
     const [type, setType] = useState<"MCQ" | "SHORT_ANSWER">("MCQ");
     const [options, setOptions] = useState<string[]>(["", ""]);
+    const [correctIndex, setCorrectIndex] = useState<number>(0);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const addOption = () => setOptions([...options, ""]);
@@ -30,7 +31,12 @@ export function AddQuestionForm({ videoId }: { videoId: string }) {
         formData.append("type", type);
 
         if (type === "MCQ") {
-            formData.append("options", JSON.stringify(options.filter(o => o.trim() !== "")));
+            const finalOptions = options.filter(o => o.trim() !== "");
+            formData.append("options", JSON.stringify(finalOptions));
+
+            if (finalOptions[correctIndex]) {
+                formData.append("correctOption", finalOptions[correctIndex]);
+            }
         }
 
         try {
@@ -38,6 +44,7 @@ export function AddQuestionForm({ videoId }: { videoId: string }) {
             e.currentTarget.reset();
             setType("MCQ");
             setOptions(["", ""]);
+            setCorrectIndex(0);
         } catch (error) {
             console.error(error);
         } finally {
@@ -73,9 +80,20 @@ export function AddQuestionForm({ videoId }: { videoId: string }) {
 
             {type === "MCQ" && (
                 <div className="space-y-3 bg-black/20 p-4 rounded-md border border-white/5">
-                    <Label>Options</Label>
+                    <div>
+                        <Label>Options</Label>
+                        <p className="text-xs text-muted-foreground mt-1">Select the radio button next to the correct answer.</p>
+                    </div>
                     {options.map((option, index) => (
                         <div key={index} className="flex gap-2 items-center">
+                            <input
+                                type="radio"
+                                name="correctOptionRadio"
+                                checked={correctIndex === index}
+                                onChange={() => setCorrectIndex(index)}
+                                className="w-4 h-4 text-primary bg-black/50 border-white/20 focus:ring-primary cursor-pointer shrink-0"
+                                required
+                            />
                             <Input
                                 value={option}
                                 onChange={(e) => updateOption(index, e.target.value)}
