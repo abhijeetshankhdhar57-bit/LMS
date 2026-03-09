@@ -16,11 +16,19 @@ export function CourseInteractiveClient({
     // Bypass mandate if video isn't mandatory, if previously scored, or if they just finished it.
     const isUnlocked = !video.isMandatory || videoCompleted || !!previousScore;
 
+    const handleVideoEnd = () => {
+        setVideoCompleted(true);
+        // Add a tiny delay to ensure React state updates and the locked overlay disappears gracefully before scrolling down
+        setTimeout(() => {
+            document.getElementById('quiz-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 150);
+    };
+
     return (
         <div className="flex flex-col gap-10">
             <div className="w-full space-y-8">
                 <div className="rounded-xl overflow-hidden border border-white/10 shadow-lg bg-black/50">
-                    <VideoPlayer url={video.url} bannerUrl={video.bannerUrl} onEnded={() => setVideoCompleted(true)} />
+                    <VideoPlayer url={video.url} bannerUrl={video.bannerUrl} onEnded={handleVideoEnd} />
                 </div>
 
                 <div className="bg-white/5 border border-white/10 p-6 sm:p-8 rounded-xl">
