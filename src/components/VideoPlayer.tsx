@@ -21,6 +21,18 @@ export function VideoPlayer({ url, bannerUrl, onEnded }: { url: string; bannerUr
         }
     }, [url]);
 
+    const handleVideoEnd = () => {
+        try {
+            if (document.fullscreenElement) {
+                document.exitFullscreen().catch(e => console.log("Failed to exit fullscreen:", e));
+            }
+        } catch (error) {
+            console.log("Fullscreen API error:", error);
+        }
+
+        if (onEnded) onEnded();
+    };
+
     // Handle direct MP4 or Vercel Blob URLs natively
     const isNativeVideo = url.endsWith(".mp4") || url.includes("blob.vercel-storage.com");
 
@@ -57,7 +69,7 @@ export function VideoPlayer({ url, bannerUrl, onEnded }: { url: string; bannerUr
                     controls
                     autoPlay
                     className="w-full h-full object-contain"
-                    onEnded={onEnded}
+                    onEnded={handleVideoEnd}
                     preload="metadata"
                     poster={bannerUrl || undefined}
                 />
@@ -84,7 +96,7 @@ export function VideoPlayer({ url, bannerUrl, onEnded }: { url: string; bannerUr
                 videoId={videoId}
                 opts={{ width: "100%", height: "100%", playerVars: { autoplay: 1 } }}
                 onReady={(event) => { ytPlayerRef.current = event.target; }}
-                onEnd={onEnded}
+                onEnd={handleVideoEnd}
                 className="w-full h-full"
                 iframeClassName="w-full h-full object-cover"
             />
