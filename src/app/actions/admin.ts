@@ -8,6 +8,7 @@ import { authOptions } from "@/lib/auth";
 import { Resend } from "resend";
 import { CourseAssignmentEmail } from "@/components/emails/CourseAssignment";
 import ReminderEmail from "@/components/emails/ReminderEmail";
+import { WelcomeEmail } from "@/components/emails/WelcomeEmail";
 import React from "react";
 
 async function requireAdmin() {
@@ -262,4 +263,64 @@ export async function sendReminders() {
     }
 
     return { success: true, count: emailsSent };
+}
+
+export async function bulkUploadUsers(users: { name: string, email: string, role: "LEARNER" | "ADMIN" }[]) {
+    await requireAdmin();
+
+    const results = { successful: 0, failed: 0, errors: [] as string[] };
+    const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
+
+    for (const u of users) {
+        if (!u.email || !u.name) {
+            results.failed++;
+            results.errors.push(`Missing required fields for entry: ${JSON.stringify(u)}`);
+            continue;
+        }
+
+        try {
+            // Check if user already exists
+            const existing = await db.user.findUnique({ where: { email: u.email } });
+            if (existing) {
+                results.failed++;
+                results.errors.push(`Email already exists: ${u.email}`);
+                continue;
+            }
+
+            // Generate secure temporary password
+            // const tempPassword = Math.random().toString(36).slice(-10) + "Jp!";
+            // const hashedPassword = await hash(tempPassword, 10);
+
+            // Provision the database record (No password needed, SSO only)
+            await db.user.create({
+                data: {
+                    name: u.name,
+                    email: u.email,
+                    role: u.role || "LEARNER",
+                }
+            });
+
+            // Dispatch welcome credentials via Resend
+            if (process.env.RESEND_API_KEY) {
+                try {
+                    await resend.emails.send({
+                        from: "Juspay LMS <onboarding@resend.dev>",
+                        to: u.email,
+                        subject: "Welcome to Juspay LMS - Your Account Details",
+                        react: WelcomeEmail({ userName: u.name, loginUrl: baseUrl }) as React.ReactElement,
+                    });
+                } catch (e) {
+                    console.error(`Failed to dispatch Welcome Payload to ${u.email}:`, e);
+                }
+            }
+
+            results.successful++;
+        } catch (error: any) {
+            results.failed++;
+            results.errors.push(`Failed to import ${u.email}: ${error.message}`);
+        }
+    }
+
+    revalidatePath("/admin/users");
+    return results;
 }

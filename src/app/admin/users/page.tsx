@@ -8,8 +8,9 @@ import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { SendRemindersButton } from "./SendRemindersButton";
 import { ExportCSVButton } from "@/components/admin/ExportCSVButton";
+import { BulkUploadDialog } from "@/components/admin/BulkUploadDialog";
 
-export default async function AdminUsersDirectory() {
+export default async function AdminUsersPage() {
     const session = await getServerSession(authOptions);
     // @ts-ignore
     if (!session?.user || session.user.role !== "ADMIN") {
@@ -28,9 +29,13 @@ export default async function AdminUsersDirectory() {
 
     return (
         <div className="p-8">
-            <div className="flex items-center justify-between mb-8">
-                <h1 className="text-3xl font-bold">User Directory</h1>
-                <div className="flex items-center gap-3">
+            <div className="flex justify-between items-center mb-8">
+                <div>
+                    <h1 className="text-3xl font-bold">User Directory</h1>
+                    <p className="text-muted-foreground mt-2">Manage learners and track their progress ({users.length} total)</p>
+                </div>
+                <div className="flex gap-4">
+                    <BulkUploadDialog />
                     <ExportCSVButton />
                     <SendRemindersButton />
                 </div>
