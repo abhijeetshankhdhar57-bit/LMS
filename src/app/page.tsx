@@ -8,6 +8,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { LoginCard } from "@/components/auth/LoginCard";
+import { Leaderboard } from "@/components/learner/Leaderboard";
 
 export default async function LearnerDashboard() {
   const session = await getServerSession(authOptions);
@@ -75,64 +76,70 @@ export default async function LearnerDashboard() {
         </Card>
       </div>
 
-      <div>
-        <h2 className="text-xl font-semibold mb-4">Available Courses</h2>
-        {videos.length === 0 ? (
-          <div className="p-12 text-center border border-dashed border-white/20 rounded-xl bg-black/20 text-muted-foreground">
-            No courses available yet. Check back later!
-          </div>
-        ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {videos.map((video) => {
-              const score = video.scores[0];
-              const isCompleted = !!score;
-              const hasQuestions = video._count.questions > 0;
+      <div className="grid gap-8 lg:grid-cols-3 items-start">
+        <div className="lg:col-span-2 space-y-4">
+          <h2 className="text-xl font-semibold mb-4">Available Courses</h2>
+          {videos.length === 0 ? (
+            <div className="p-12 text-center border border-dashed border-white/20 rounded-xl bg-black/20 text-muted-foreground">
+              No courses available yet. Check back later!
+            </div>
+          ) : (
+            <div className="grid gap-6 md:grid-cols-2">
+              {videos.map((video) => {
+                const score = video.scores[0];
+                const isCompleted = !!score;
+                const hasQuestions = video._count.questions > 0;
 
-              return (
-                <Card key={video.id} className="flex flex-col overflow-hidden hover:shadow-[0_0_25px_rgba(100,60,255,0.15)] transition-shadow border-white/10 bg-card/40 backdrop-blur-sm">
-                  <div className="aspect-video bg-black/40 border-b border-white/5 flex items-center justify-center relative overflow-hidden group">
-                    {video.bannerUrl ? (
-                      <img src={video.bannerUrl} alt={video.title} className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
-                    ) : (
-                      <PlayCircle className="h-12 w-12 text-white/20" />
-                    )}
-                    {isCompleted && (
-                      <div className="absolute inset-0 bg-green-500/10 flex items-center justify-center backdrop-blur-[1px]">
-                        <CheckCircle2 className="h-16 w-16 text-green-500" />
-                      </div>
-                    )}
-                  </div>
-                  <CardHeader className="pb-2 flex-grow">
-                    <div className="flex justify-between items-start gap-2">
-                      <CardTitle className="text-lg line-clamp-1">{video.title}</CardTitle>
-                      {isCompleted ? (
-                        <Badge variant="default" className="bg-green-500 hover:bg-green-600">Done</Badge>
+                return (
+                  <Card key={video.id} className="flex flex-col overflow-hidden hover:shadow-[0_0_25px_rgba(100,60,255,0.15)] transition-shadow border-white/10 bg-card/40 backdrop-blur-sm">
+                    <div className="aspect-video bg-black/40 border-b border-white/5 flex items-center justify-center relative overflow-hidden group">
+                      {video.bannerUrl ? (
+                        <img src={video.bannerUrl} alt={video.title} className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
                       ) : (
-                        <Badge variant="secondary">New</Badge>
+                        <PlayCircle className="h-12 w-12 text-white/20" />
+                      )}
+                      {isCompleted && (
+                        <div className="absolute inset-0 bg-green-500/10 flex items-center justify-center backdrop-blur-[1px]">
+                          <CheckCircle2 className="h-16 w-16 text-green-500" />
+                        </div>
                       )}
                     </div>
-                    <CardDescription className="line-clamp-2 mt-1 min-h-[40px]">
-                      {video.description || "No description provided."}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="pt-2 mt-auto border-t border-white/5 bg-black/20 flex justify-between items-center">
-                    <div className="text-sm text-muted-foreground flex flex-col">
-                      <span>{video._count.questions} Questions</span>
-                      {isCompleted && score.total > 0 && (
-                        <span className="font-medium text-primary">Score: {score.score}/{score.total}</span>
-                      )}
-                    </div>
-                    <Link href={`/courses/${video.id}`}>
-                      <Button size="sm" variant={isCompleted ? "outline" : "default"}>
-                        {isCompleted ? "Review" : "Start Course"}
-                      </Button>
-                    </Link>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-        )}
+                    <CardHeader className="pb-2 flex-grow">
+                      <div className="flex justify-between items-start gap-2">
+                        <CardTitle className="text-lg line-clamp-1">{video.title}</CardTitle>
+                        {isCompleted ? (
+                          <Badge variant="default" className="bg-green-500 hover:bg-green-600">Done</Badge>
+                        ) : (
+                          <Badge variant="secondary">New</Badge>
+                        )}
+                      </div>
+                      <CardDescription className="line-clamp-2 mt-1 min-h-[40px]">
+                        {video.description || "No description provided."}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="pt-2 mt-auto border-t border-white/5 bg-black/20 flex justify-between items-center">
+                      <div className="text-sm text-muted-foreground flex flex-col">
+                        <span>{video._count.questions} Questions</span>
+                        {isCompleted && score.total > 0 && (
+                          <span className="font-medium text-primary">Score: {score.score}/{score.total}</span>
+                        )}
+                      </div>
+                      <Link href={`/courses/${video.id}`}>
+                        <Button size="sm" variant={isCompleted ? "outline" : "default"}>
+                          {isCompleted ? "Review" : "Start Course"}
+                        </Button>
+                      </Link>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        <div className="space-y-6 sticky top-6">
+          <Leaderboard />
+        </div>
       </div>
     </div>
   );
