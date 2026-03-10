@@ -138,7 +138,7 @@ export default async function LearnerDashboard() {
             )}
           </div>
 
-          <div className="space-y-6 sticky top-8">
+          <div className="space-y-6">
             <Leaderboard />
           </div>
         </div>
