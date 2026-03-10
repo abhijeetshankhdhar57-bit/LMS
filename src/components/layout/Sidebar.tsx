@@ -41,7 +41,7 @@ export function Sidebar() {
             initial={{ x: -250 }}
             animate={{ x: 0 }}
             transition={{ type: "spring", stiffness: 100, damping: 20 }}
-            className="flex flex-col h-full w-64 border-r border-white/10 bg-black/60 backdrop-blur-3xl shadow-[4px_0_24px_rgba(0,0,0,0.5)] z-20"
+            className="hidden md:flex flex-col h-full w-64 border-r border-white/10 bg-black/60 backdrop-blur-3xl shadow-[4px_0_24px_rgba(0,0,0,0.5)] z-20"
         >
             <div className="flex h-16 items-center border-b border-white/10 px-6 justify-between relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent opacity-50 pointer-events-none" />

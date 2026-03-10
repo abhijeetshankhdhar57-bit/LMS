@@ -180,16 +180,18 @@ export async function sendReminders() {
         select: { id: true, title: true }
     });
 
+    console.log(`[sendReminders] Found ${mandatoryVideos.length} mandatory videos`);
     if (mandatoryVideos.length === 0) return { success: true, count: 0 };
 
-    // Find all users (can filter by LEARNER if roles are strict)
     const users = await db.user.findMany({
+        where: { role: "LEARNER" },
         include: {
             scores: {
                 select: { videoId: true }
             }
         }
     });
+    console.log(`[sendReminders] Found ${users.length} learners`);
 
     let emailsSent = 0;
 
@@ -201,18 +203,26 @@ export async function sendReminders() {
             .filter(v => !completedVideoIds.has(v.id))
             .map(v => v.title);
 
+        console.log(`[sendReminders] Learner ${user.email} missing modules:`, missingModules.length);
+
         if (missingModules.length > 0) {
             try {
                 // @ts-ignore
-                await resend.emails.send({
+                const { data, error } = await resend.emails.send({
                     from: "Juspay LMS <onboarding@resend.dev>", // Warning: resend.dev only allows sending to the verified dev email address. To send to real users, a custom domain must be verified on Resend.
                     to: user.email,
                     subject: "Action Required: Complete your Mandatory Training Modules",
                     react: ReminderEmail({ userName: user.name || "Team", missingModules }) as React.ReactElement,
                 });
-                emailsSent++;
+
+                if (error) {
+                    console.error(`[sendReminders] Resend API Error for ${user.email}:`, error.message);
+                } else {
+                    console.log(`[sendReminders] Email successfully queued for ${user.email}`);
+                    emailsSent++;
+                }
             } catch (e) {
-                console.error("Failed to send email to", user.email, e);
+                console.error("[sendReminders] Fatal exception sending to", user.email, e);
             }
         }
     }

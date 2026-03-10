@@ -15,7 +15,7 @@ export default function ReminderEmail({ userName, missingModules }: { userName: 
                         Hi {userName || "Team"},
                     </Text>
                     <Text style={{ fontSize: '16px', color: '#4a4a4a', lineHeight: '24px' }}>
-                        This is a friendly reminder that you have incomplete mandatory training modules waiting for you in the Juspay Learning Management System.
+                        We'd like to bring to your attention that certain mandatory training modules assigned to you in the Juspay Learning Management System remain incomplete. Please log in at your earliest to complete them.
                     </Text>
 
                     <Section style={{ backgroundColor: '#f9f9f9', padding: '20px', borderRadius: '6px', margin: '20px 0', border: '1px solid #eeeeee' }}>
