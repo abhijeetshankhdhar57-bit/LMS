@@ -87,6 +87,37 @@ export async function createVideo(formData: FormData) {
     return video;
 }
 
+export async function updateVideoMetadata(videoId: string, formData: FormData) {
+    await requireAdmin();
+
+    const title = formData.get("title") as string;
+    const description = formData.get("description") as string;
+    const isMandatory = formData.get("isMandatory") === "on";
+    const passingPercentageRaw = formData.get("passingPercentage") as string;
+    const passingPercentage = parseInt(passingPercentageRaw) || 0;
+
+    if (!title) {
+        throw new Error("Title is required.");
+    }
+
+    const video = await db.video.update({
+        where: { id: videoId },
+        data: {
+            title,
+            description,
+            isMandatory,
+            passingPercentage,
+        },
+    });
+
+    revalidatePath(`/admin/videos/${videoId}`);
+    revalidatePath("/admin/videos");
+    revalidatePath(`/courses/${videoId}`);
+    revalidatePath("/courses");
+
+    return video;
+}
+
 export async function deleteVideo(id: string) {
     await requireAdmin();
 

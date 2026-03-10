@@ -12,6 +12,7 @@ import { deleteVideo, deleteQuestion } from "@/app/actions/admin";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { EditQuestionDialog } from "@/components/admin/EditQuestionDialog";
+import { EditVideoDialog } from "@/components/admin/EditVideoDialog";
 
 export default async function AdminVideoDetailsPage({ params }: { params: Promise<{ id: string }> }) {
     const session = await getServerSession(authOptions);
@@ -47,15 +48,18 @@ export default async function AdminVideoDetailsPage({ params }: { params: Promis
                     <h1 className="text-3xl font-bold">{video.title}</h1>
                     <p className="text-muted-foreground mt-2">{video.description}</p>
                 </div>
-                <form action={async () => {
-                    "use server";
-                    await deleteVideo(video.id);
-                }}>
-                    <Button variant="destructive" size="sm">
-                        <Trash2 className="h-4 w-4 mr-2" />
-                        Delete Video
-                    </Button>
-                </form>
+                <div className="flex items-center gap-3">
+                    <EditVideoDialog video={video} />
+                    <form action={async () => {
+                        "use server";
+                        await deleteVideo(video.id);
+                    }}>
+                        <Button variant="destructive" size="sm">
+                            <Trash2 className="h-4 w-4 mr-2" />
+                            Delete Video
+                        </Button>
+                    </form>
+                </div>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
