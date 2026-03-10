@@ -198,11 +198,31 @@ export default function NewVideoPage() {
                         </div>
 
                         {/* Settings */}
-                        <div className="flex items-center space-x-3 p-4 border border-white/5 rounded-xl bg-white/5">
-                            <input type="checkbox" id="isMandatory" name="isMandatory" className="w-5 h-5 rounded border-white/20 bg-black/50 text-primary accent-primary" />
-                            <div className="space-y-1 leading-none cursor-pointer">
-                                <Label htmlFor="isMandatory" className="font-medium cursor-pointer text-base">Mark as Mandatory</Label>
-                                <p className="text-sm text-muted-foreground">Learners will be required to pass this module.</p>
+                        <div className="space-y-4">
+                            <div className="flex items-center space-x-3 p-4 border border-white/5 rounded-xl bg-white/5">
+                                <input type="checkbox" id="isMandatory" name="isMandatory" className="w-5 h-5 rounded border-white/20 bg-black/50 text-primary accent-primary" />
+                                <div className="space-y-1 leading-none cursor-pointer">
+                                    <Label htmlFor="isMandatory" className="font-medium cursor-pointer text-base">Mark as Mandatory</Label>
+                                    <p className="text-sm text-muted-foreground">Learners will be required to pass this module.</p>
+                                </div>
+                            </div>
+
+                            <div className="space-y-2 p-4 border border-white/5 rounded-xl bg-white/5">
+                                <Label htmlFor="passingPercentage">Passing Percentage Requirement</Label>
+                                <div className="flex items-center gap-2">
+                                    <Input
+                                        type="number"
+                                        id="passingPercentage"
+                                        name="passingPercentage"
+                                        placeholder="e.g. 80"
+                                        min="0"
+                                        max="100"
+                                        defaultValue="0"
+                                        className="bg-black/50 w-24"
+                                    />
+                                    <span className="text-muted-foreground text-sm font-medium">%</span>
+                                </div>
+                                <p className="text-sm text-muted-foreground mt-1">Set to 0 to eliminate a cut-off score (any score passes).</p>
                             </div>
                         </div>
 

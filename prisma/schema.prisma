@@ -35,6 +35,7 @@ model Video {
   bannerUrl   String?
   driveUrl    String?    // Optional link for Google Drive, PPT, PDF, etc.
   isMandatory Boolean    @default(false)
+  passingPercentage Int  @default(0)
   questions   Question[]
   scores      Score[]
   createdAt   DateTime   @default(now())

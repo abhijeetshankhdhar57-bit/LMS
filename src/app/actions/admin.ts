@@ -26,6 +26,8 @@ export async function createVideo(formData: FormData) {
     const driveUrl = formData.get("driveUrl") as string | null;
     const bannerUrl = formData.get("bannerUrl") as string | null;
     const isMandatory = formData.get("isMandatory") === "on";
+    const passingPercentageRaw = formData.get("passingPercentage") as string;
+    const passingPercentage = parseInt(passingPercentageRaw) || 0;
 
     if (!title || !url) {
         throw new Error("Title and URL are required.");
@@ -39,6 +41,7 @@ export async function createVideo(formData: FormData) {
             bannerUrl,
             driveUrl,
             isMandatory,
+            passingPercentage,
         },
     });
 

@@ -30,6 +30,7 @@ export function QuizSection({
     const [answers, setAnswers] = useState<Record<string, string>>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
+    const [failMessage, setFailMessage] = useState<string | null>(null);
 
     // If already completed and user hasn't clicked "retake"
     const [isReviewMode, setIsReviewMode] = useState(!!previousScore);
@@ -44,17 +45,25 @@ export function QuizSection({
         if (!allAnswered) return;
 
         setIsSubmitting(true);
+        setFailMessage(null);
         try {
             const formattedAnswers = Object.entries(answers).map(([questionId, responseText]) => ({
                 questionId,
                 responseText,
             }));
 
-            await submitAnswers(videoId, formattedAnswers);
-            setIsSuccess(true);
-            setIsReviewMode(true);
+            const res = await submitAnswers(videoId, formattedAnswers);
+
+            if (res && res.success === false) {
+                setFailMessage(res.message || "You did not meet the required passing threshold. Please try again.");
+                // Keep review mode false so they can retry
+            } else {
+                setIsSuccess(true);
+                setIsReviewMode(true);
+            }
         } catch (error) {
             console.error(error);
+            setFailMessage("An unexpected error occurred while submitting your answers.");
         } finally {
             setIsSubmitting(false);
         }
@@ -107,6 +116,28 @@ export function QuizSection({
                         Back to Dashboard
                     </Button>
                 </CardContent>
+            </Card>
+        );
+    }
+
+    if (failMessage) {
+        return (
+            <Card className="border-red-900/50 bg-red-950/20 p-8 text-center space-y-4 animate-in fade-in zoom-in duration-300">
+                <div className="mx-auto w-16 h-16 bg-red-900/40 rounded-full flex items-center justify-center mb-4 ring-1 ring-red-500/20">
+                    <span className="text-3xl">⚠️</span>
+                </div>
+                <h3 className="text-xl font-bold text-red-500">Threshold Not Met</h3>
+                <p className="text-red-400/80 max-w-sm mx-auto">
+                    {failMessage}
+                </p>
+                <div className="pt-4">
+                    <Button variant="outline" className="border-red-900/50 hover:bg-red-900/30 hover:text-red-300 text-red-400 bg-transparent" onClick={() => {
+                        setFailMessage(null);
+                        setAnswers({}); // optionally clear their answers
+                    }}>
+                        Review Video & Try Again
+                    </Button>
+                </div>
             </Card>
         );
     }
