@@ -42,7 +42,11 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
                 <p className="text-muted-foreground mt-2">{video.description}</p>
             </div>
 
-            <CourseInteractiveClient video={video} previousScore={previousScore} />
+            <CourseInteractiveClient
+                video={video}
+                previousScore={previousScore}
+                learnerName={session.user.name || session.user.email?.split('@')[0] || "Learner"}
+            />
         </div>
     );
 }

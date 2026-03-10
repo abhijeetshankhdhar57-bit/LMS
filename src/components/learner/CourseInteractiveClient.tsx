@@ -6,10 +6,12 @@ import { QuizSection } from "@/components/learner/QuizSection";
 
 export function CourseInteractiveClient({
     video,
-    previousScore
+    previousScore,
+    learnerName
 }: {
     video: any;
-    previousScore: any
+    previousScore: any;
+    learnerName: string;
 }) {
     const [videoCompleted, setVideoCompleted] = useState(false);
 
@@ -57,6 +59,8 @@ export function CourseInteractiveClient({
                     questions={video.questions}
                     previousScore={previousScore}
                     isUnlocked={isUnlocked}
+                    learnerName={learnerName}
+                    courseTitle={video.title}
                 />
             </div>
         </div>

@@ -7,7 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { submitAnswers } from "@/app/actions/learner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, CheckCircle2 } from "lucide-react";
+import { Loader2, CheckCircle2, Award } from "lucide-react";
+import { CertificateGenerator } from "@/components/learner/CertificateGenerator";
 
 type Question = {
     id: string;
@@ -21,11 +22,15 @@ export function QuizSection({
     questions,
     previousScore,
     isUnlocked = true, // default to true for backwards compatibility just in case
+    learnerName,
+    courseTitle,
 }: {
     videoId: string;
     questions: Question[];
     previousScore: { score: number, total: number } | null;
     isUnlocked?: boolean;
+    learnerName: string;
+    courseTitle: string;
 }) {
     const [answers, setAnswers] = useState<Record<string, string>>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -83,19 +88,22 @@ export function QuizSection({
         return (
             <Card className="border-green-900/50 bg-green-950/20">
                 <CardContent className="p-8 text-center space-y-4">
-                    <div className="mx-auto w-16 h-16 bg-green-900/40 rounded-full flex items-center justify-center mb-4 ring-1 ring-green-500/20">
-                        <CheckCircle2 className="h-8 w-8 text-green-400" />
+                    <div className="mx-auto w-16 h-16 bg-green-900/40 rounded-full flex items-center justify-center mb-4 ring-1 ring-green-500/20 shadow-[0_0_15px_rgba(34,197,94,0.2)]">
+                        <Award className="h-8 w-8 text-green-400" />
                     </div>
                     <h3 className="text-xl font-bold text-green-400">Module Completed!</h3>
                     <p className="text-green-500/80">
                         You scored {previousScore?.score} out of {previousScore?.total}. Great job!
                     </p>
-                    <Button variant="outline" className="mt-4 border-green-900/50 hover:bg-green-900/30 hover:text-green-300 text-green-400 bg-transparent" onClick={() => {
-                        setIsReviewMode(false);
-                        setAnswers({});
-                    }}>
-                        Retake Quiz
-                    </Button>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6">
+                        <CertificateGenerator learnerName={learnerName} courseTitle={courseTitle} className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white border-none shadow-[0_0_15px_rgba(22,163,74,0.4)]" />
+                        <Button variant="outline" className="w-full sm:w-auto border-green-900/50 hover:bg-green-900/30 hover:text-green-300 text-green-400 bg-transparent" onClick={() => {
+                            setIsReviewMode(false);
+                            setAnswers({});
+                        }}>
+                            Retake Quiz
+                        </Button>
+                    </div>
                 </CardContent>
             </Card>
         );
@@ -103,18 +111,21 @@ export function QuizSection({
 
     if (isSuccess) {
         return (
-            <Card className="border-green-900/50 bg-green-950/20">
+            <Card className="border-green-900/50 bg-green-950/20 animate-in zoom-in duration-300">
                 <CardContent className="p-8 text-center space-y-4">
-                    <div className="mx-auto w-16 h-16 bg-green-900/40 rounded-full flex items-center justify-center mb-4 ring-1 ring-green-500/20">
+                    <div className="mx-auto w-16 h-16 bg-green-900/40 rounded-full flex items-center justify-center mb-4 ring-1 ring-green-500/20 shadow-[0_0_15px_rgba(34,197,94,0.2)]">
                         <CheckCircle2 className="h-8 w-8 text-green-400" />
                     </div>
                     <h3 className="text-xl font-bold text-green-400">Answers Submitted!</h3>
                     <p className="text-green-500/80">
                         Your responses have been recorded successfully.
                     </p>
-                    <Button variant="outline" className="mt-4 border-green-900/50 hover:bg-green-900/30 hover:text-green-300 text-green-400 bg-transparent" onClick={() => window.location.href = '/'}>
-                        Back to Dashboard
-                    </Button>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6">
+                        <CertificateGenerator learnerName={learnerName} courseTitle={courseTitle} className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white border-none shadow-[0_0_15px_rgba(22,163,74,0.4)]" />
+                        <Button variant="outline" className="w-full sm:w-auto border-green-900/50 hover:bg-green-900/30 hover:text-green-300 text-green-400 bg-transparent" onClick={() => window.location.href = '/'}>
+                            Back to Dashboard
+                        </Button>
+                    </div>
                 </CardContent>
             </Card>
         );

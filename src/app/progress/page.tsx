@@ -5,9 +5,10 @@ import { redirect } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, CheckCircle2, Target } from "lucide-react";
+import { CheckCircle2, Target } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { CertificateGenerator } from "@/components/learner/CertificateGenerator";
 
 export default async function ProgressPage() {
     const session = await getServerSession(authOptions);
@@ -39,7 +40,7 @@ export default async function ProgressPage() {
                 <Card>
                     <CardHeader className="pb-2 flex flex-row items-center justify-between">
                         <CardTitle className="text-sm font-medium text-muted-foreground">Modules Completed</CardTitle>
-                        <BookOpen className="h-4 w-4 text-primary" />
+                        <CheckCircle2 className="h-4 w-4 text-primary" />
                     </CardHeader>
                     <CardContent>
                         <div className="text-3xl font-bold">{totalVideosCompleted}</div>
@@ -109,9 +110,17 @@ export default async function ProgressPage() {
                                                 </Badge>
                                             </TableCell>
                                             <TableCell className="text-right">
-                                                <Link href={`/courses/${scoreInfo.videoId}`}>
-                                                    <Button variant="ghost" size="sm">Review</Button>
-                                                </Link>
+                                                <div className="flex items-center justify-end gap-2">
+                                                    <CertificateGenerator
+                                                        learnerName={session.user.name || session.user.email?.split('@')[0] || "Learner"}
+                                                        courseTitle={scoreInfo.video.title}
+                                                        variant="ghost"
+                                                        className="h-8 px-3 text-xs border border-primary/20 hover:bg-primary/20 hover:text-primary transition-colors text-primary"
+                                                    />
+                                                    <Link href={`/courses/${scoreInfo.videoId}`}>
+                                                        <Button variant="default" size="sm" className="h-8">Review</Button>
+                                                    </Link>
+                                                </div>
                                             </TableCell>
                                         </TableRow>
                                     );
