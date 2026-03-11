@@ -51,9 +51,6 @@ export async function submitAnswers(
 
         if (question && question.type === "MCQ" && question.correctOption) {
             isCorrect = answer.responseText === question.correctOption;
-            if (isCorrect) {
-                totalScore += (question.points || 1);
-            }
         }
 
         // Upsert answer to allow re-submission

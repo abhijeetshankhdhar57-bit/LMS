@@ -61,6 +61,7 @@ export function CourseInteractiveClient({
                     isUnlocked={isUnlocked}
                     learnerName={learnerName}
                     courseTitle={video.title}
+                    passingPercentage={video.passingPercentage}
                 />
             </div>
         </div>

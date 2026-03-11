@@ -24,6 +24,7 @@ export function QuizSection({
     isUnlocked = true, // default to true for backwards compatibility just in case
     learnerName,
     courseTitle,
+    passingPercentage = 0,
 }: {
     videoId: string;
     questions: Question[];
@@ -31,14 +32,19 @@ export function QuizSection({
     isUnlocked?: boolean;
     learnerName: string;
     courseTitle: string;
+    passingPercentage?: number;
 }) {
     const [answers, setAnswers] = useState<Record<string, string>>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [failMessage, setFailMessage] = useState<string | null>(null);
 
-    // If already completed and user hasn't clicked "retake"
-    const [isReviewMode, setIsReviewMode] = useState(!!previousScore);
+    const didPassPreviously = previousScore
+        ? (previousScore.total === 0 || (previousScore.score / previousScore.total) * 100 >= passingPercentage!)
+        : false;
+
+    // Only lock into Review Mode success screen if the previous score actually passed the threshold
+    const [isReviewMode, setIsReviewMode] = useState(didPassPreviously);
 
     const handleOptionChange = (questionId: string, value: string) => {
         setAnswers(prev => ({ ...prev, [questionId]: value }));
@@ -168,6 +174,15 @@ export function QuizSection({
                 <CardDescription>Answer the following questions to complete this module.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-8">
+                {previousScore && !didPassPreviously && (
+                    <div className="bg-red-950/40 border border-red-900/50 p-4 rounded-md text-red-400 text-sm flex items-start gap-3">
+                        <span className="text-xl">⚠️</span>
+                        <div>
+                            <strong>Previous Attempt Did Not Pass</strong>
+                            <p className="mt-1 opacity-90">You scored {previousScore.score} out of {previousScore.total}. You need at least {passingPercentage}% to pass. Please review the material and carefully select your answers below.</p>
+                        </div>
+                    </div>
+                )}
                 {questions.map((q, idx) => (
                     <div key={q.id} className="space-y-4">
                         <h4 className="font-medium text-base">

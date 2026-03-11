@@ -111,12 +111,14 @@ export default async function ProgressPage() {
                                             </TableCell>
                                             <TableCell className="text-right">
                                                 <div className="flex items-center justify-end gap-2">
-                                                    <CertificateGenerator
-                                                        learnerName={session.user.name || session.user.email?.split('@')[0] || "Learner"}
-                                                        courseTitle={scoreInfo.video.title}
-                                                        variant="ghost"
-                                                        className="h-8 px-3 text-xs border border-primary/20 hover:bg-primary/20 hover:text-primary transition-colors text-primary"
-                                                    />
+                                                    {(percentage >= scoreInfo.video.passingPercentage || scoreInfo.total === 0) && (
+                                                        <CertificateGenerator
+                                                            learnerName={session.user.name || session.user.email?.split('@')[0] || "Learner"}
+                                                            courseTitle={scoreInfo.video.title}
+                                                            variant="ghost"
+                                                            className="h-8 px-3 text-xs border border-primary/20 hover:bg-primary/20 hover:text-primary transition-colors text-primary"
+                                                        />
+                                                    )}
                                                     <Link href={`/courses/${scoreInfo.videoId}`}>
                                                         <Button variant="default" size="sm" className="h-8">Review</Button>
                                                     </Link>
