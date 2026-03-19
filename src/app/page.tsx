@@ -45,13 +45,13 @@ export default async function LearnerDashboard() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">
-        <Card className="bg-primary text-primary-foreground">
+        <Card className="bg-primary text-primary-foreground shadow-[0_4px_20px_rgba(100,60,255,0.3)]">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium opacity-90">Course Content</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">{videos.length} Modules</div>
-            <p className="text-sm opacity-80 mt-1">Available to learn</p>
+            <div className="text-3xl font-bold">{videos.length - completedVideos.length} Modules</div>
+            <p className="text-sm opacity-80 mt-1">To be completed</p>
           </CardContent>
         </Card>
         <Card>
@@ -81,7 +81,7 @@ export default async function LearnerDashboard() {
         <div className="grid gap-8 lg:grid-cols-3 items-start">
           <div className="lg:col-span-2">
             {videos.length === 0 ? (
-              <div className="p-12 text-center border border-dashed border-white/20 rounded-xl bg-black/20 text-muted-foreground">
+              <div className="p-12 text-center border border-dashed border-border rounded-xl bg-accent/5 text-muted-foreground">
                 No courses available yet. Check back later!
               </div>
             ) : (
@@ -92,12 +92,12 @@ export default async function LearnerDashboard() {
                   const hasQuestions = video._count.questions > 0;
 
                   return (
-                    <Card key={video.id} className="flex flex-col overflow-hidden hover:shadow-[0_0_25px_rgba(100,60,255,0.15)] transition-shadow border-white/10 bg-card/40 backdrop-blur-sm">
-                      <div className="aspect-video bg-black/40 border-b border-white/5 flex items-center justify-center relative overflow-hidden group">
+                    <Card key={video.id} className="flex flex-col overflow-hidden hover:shadow-[0_0_25px_rgba(100,60,255,0.15)] transition-shadow border-border bg-card/40 backdrop-blur-sm">
+                      <div className="aspect-video bg-accent/10 border-b border-border flex items-center justify-center relative overflow-hidden group">
                         {video.bannerUrl ? (
                           <img src={video.bannerUrl} alt={video.title} className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
                         ) : (
-                          <PlayCircle className="h-12 w-12 text-white/20" />
+                          <PlayCircle className="h-12 w-12 text-muted-foreground/20" />
                         )}
                         {isCompleted && (
                           <div className="absolute inset-0 bg-green-500/10 flex items-center justify-center backdrop-blur-[1px]">
@@ -118,7 +118,7 @@ export default async function LearnerDashboard() {
                           {video.description || "No description provided."}
                         </CardDescription>
                       </CardHeader>
-                      <CardContent className="pt-2 mt-auto border-t border-white/5 bg-black/20 flex justify-between items-center">
+                      <CardContent className="pt-2 mt-auto border-t border-border bg-accent/5 flex justify-between items-center">
                         <div className="text-sm text-muted-foreground flex flex-col">
                           <span>{video._count.questions} Questions</span>
                           {isCompleted && score.total > 0 && (
