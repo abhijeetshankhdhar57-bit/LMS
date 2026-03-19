@@ -55,16 +55,16 @@ export default async function ProgressPage() {
                         <div className="text-3xl font-bold">{averageScore}%</div>
                     </CardContent>
                 </Card>
-                <Card className="bg-slate-900 text-slate-50">
+                <Card className="bg-primary/10 border-primary/20">
                     <CardHeader className="pb-2 flex flex-row items-center justify-between">
-                        <CardTitle className="text-sm font-medium opacity-80">Status</CardTitle>
-                        <CheckCircle2 className="h-4 w-4 text-green-400" />
+                        <CardTitle className="text-sm font-medium text-muted-foreground">Status</CardTitle>
+                        <CheckCircle2 className="h-4 w-4 text-green-500" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-xl font-bold mt-1">
+                        <div className="text-xl font-bold mt-1 text-foreground">
                             {averageScore >= 80 ? "Excellent!" : averageScore >= 50 ? "On Track" : "Keep Trying"}
                         </div>
-                        <p className="text-xs opacity-70 mt-1">Based on quiz performance</p>
+                        <p className="text-xs text-muted-foreground mt-1">Based on quiz performance</p>
                     </CardContent>
                 </Card>
             </div>

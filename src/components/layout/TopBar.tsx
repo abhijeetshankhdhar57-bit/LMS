@@ -16,6 +16,7 @@ import { Menu, LayoutDashboard, PlayCircle, BookOpen, Settings, Users } from "lu
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import { ModeToggle } from "./ModeToggle";
 
 export function TopBar() {
     const { data: session } = useSession();
@@ -50,21 +51,24 @@ export function TopBar() {
     const [mobileOpen, setMobileOpen] = useState(false);
 
     return (
-        <div className="flex h-16 w-full items-center justify-between border-b border-white/10 bg-black/40 backdrop-blur-2xl px-4 md:px-8 z-10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+        <div className="flex h-16 w-full items-center justify-between border-b border-border bg-background/40 backdrop-blur-2xl px-4 md:px-8 z-10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
             <div className="flex items-center gap-3">
                 {/* Mobile Hamburger Menu */}
                 {session && (
                     <div className="md:hidden">
                         <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
                             <SheetTrigger asChild>
-                                <Button variant="ghost" size="icon" className="text-white">
+                                <Button variant="ghost" size="icon" className="text-foreground">
                                     <Menu className="w-5 h-5" />
                                 </Button>
                             </SheetTrigger>
-                            <SheetContent side="left" className="w-64 bg-black/90 backdrop-blur-3xl border-r border-white/10 p-0 flex flex-col">
-                                <div className="flex h-16 items-center border-b border-white/10 px-6 justify-between relative overflow-hidden">
+                            <SheetContent side="left" className="w-64 bg-background/90 backdrop-blur-3xl border-r border-border p-0 flex flex-col">
+                                <div className="flex h-16 items-center border-b border-border px-6 justify-between relative overflow-hidden">
                                     <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent opacity-50 pointer-events-none" />
-                                    <span className="text-xl font-bold tracking-tight text-white z-10">Juspay LMS</span>
+                                    <span className="text-xl font-bold tracking-tight text-foreground z-10">Juspay LMS</span>
+                                    <div className="z-10 ml-auto mr-4">
+                                        <ModeToggle />
+                                    </div>
                                 </div>
                                 <nav className="flex-1 space-y-2 p-4 pt-6 overflow-y-auto">
                                     {links.map((link) => {
@@ -80,11 +84,11 @@ export function TopBar() {
                                                 href={link.href}
                                                 onClick={() => setMobileOpen(false)}
                                                 className={`group relative flex items-center gap-4 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-300 overflow-hidden ${isActive
-                                                    ? "text-white bg-primary/20 border border-primary/30 shadow-[0_0_15px_rgba(100,60,255,0.2)]"
-                                                    : "text-muted-foreground hover:bg-white/5 hover:text-white"
+                                                    ? "text-foreground bg-primary/20 border border-primary/30 shadow-[0_0_15px_rgba(100,60,255,0.2)]"
+                                                    : "text-muted-foreground hover:bg-accent/5 hover:text-foreground"
                                                     }`}
                                             >
-                                                <div className={`relative z-10 p-1.5 rounded-lg transition-colors ${isActive ? "bg-primary text-white" : "bg-white/5 text-muted-foreground group-hover:bg-white/10 group-hover:text-white"}`}>
+                                                <div className={`relative z-10 p-1.5 rounded-lg transition-colors ${isActive ? "bg-primary text-primary-foreground" : "bg-accent/10 text-muted-foreground group-hover:bg-accent/20 group-hover:text-foreground"}`}>
                                                     <Icon className="h-4 w-4" />
                                                 </div>
                                                 <span className="relative z-10 tracking-wide">{link.name}</span>
@@ -93,7 +97,7 @@ export function TopBar() {
                                     })}
 
                                     {isAdmin && (
-                                        <div className="pt-4 mt-4 border-t border-white/10">
+                                        <div className="pt-4 mt-4 border-t border-border">
                                             <button
                                                 onClick={() => {
                                                     const newMode = viewMode === "ADMIN" ? "LEARNER" : "ADMIN";
@@ -101,12 +105,12 @@ export function TopBar() {
                                                     setMobileOpen(false);
                                                     router.push(newMode === "ADMIN" ? "/admin" : "/courses");
                                                 }}
-                                                className="w-full relative group flex items-center justify-between gap-2 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-300 overflow-hidden bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-white border border-white/5"
+                                                className="w-full relative group flex items-center justify-between gap-2 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-300 overflow-hidden bg-accent/5 text-muted-foreground hover:bg-accent/10 hover:text-foreground border border-border"
                                             >
                                                 <span className="relative z-10 tracking-wide">
                                                     {viewMode === "ADMIN" ? "Switch to Learner" : "Switch Admin"}
                                                 </span>
-                                                <div className="relative z-10 p-1 rounded bg-white/10 group-hover:bg-primary group-hover:text-white transition-colors">
+                                                <div className="relative z-10 p-1 rounded bg-accent/10 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                                                     <Settings className="h-3 w-3" />
                                                 </div>
                                             </button>
@@ -114,9 +118,9 @@ export function TopBar() {
                                     )}
                                 </nav>
                                 {activeRole === "ADMIN" && (
-                                    <div className="p-4 border-t border-white/10 mt-auto">
-                                        <div className="rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 p-4 border border-white/10 relative overflow-hidden">
-                                            <p className="text-xs font-medium text-white/80">Premium LMS Experience</p>
+                                    <div className="p-4 border-t border-border mt-auto">
+                                        <div className="rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 p-4 border border-border relative overflow-hidden">
+                                            <p className="text-xs font-medium text-foreground/80">Premium LMS Experience</p>
                                         </div>
                                     </div>
                                 )}
@@ -130,14 +134,15 @@ export function TopBar() {
                 </div>
                 <div className="text-sm tracking-wide text-foreground/70">
                     {session ? (
-                        <>Welcome back, <span className="font-bold text-white tracking-widest">{capitalizedName}</span></>
+                        <>Welcome back, <span className="font-bold text-foreground tracking-widest">{capitalizedName}</span></>
                     ) : (
                         "Welcome to LMS Platform"
                     )}
                 </div>
             </div>
 
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-4 md:gap-6">
+                <ModeToggle />
                 {session ? (
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -147,10 +152,10 @@ export function TopBar() {
                                 </div>
                             </button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-56 bg-black/60 backdrop-blur-3xl border-white/10 shadow-2xl">
+                        <DropdownMenuContent align="end" className="w-56 bg-background/60 backdrop-blur-3xl border-border shadow-2xl">
                             <DropdownMenuLabel className="font-normal">
                                 <div className="flex flex-col space-y-1">
-                                    <p className="text-sm font-medium leading-none text-white">{capitalizedName}</p>
+                                    <p className="text-sm font-medium leading-none text-foreground">{capitalizedName}</p>
                                     <div className="flex items-center gap-1.5 mt-1.5">
                                         <span className="px-1.5 py-0.5 rounded text-[10px] font-bold tracking-wider bg-primary/20 text-primary uppercase">
                                             {userRole}
@@ -158,7 +163,7 @@ export function TopBar() {
                                     </div>
                                 </div>
                             </DropdownMenuLabel>
-                            <DropdownMenuSeparator className="bg-white/10" />
+                            <DropdownMenuSeparator className="bg-border" />
                             <DropdownMenuItem onClick={() => signOut()} className="text-red-400 focus:text-red-500 focus:bg-red-500/10 cursor-pointer">
                                 <LogOut className="mr-2 h-4 w-4" />
                                 <span>Log out</span>

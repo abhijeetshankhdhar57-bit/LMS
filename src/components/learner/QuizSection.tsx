@@ -92,18 +92,18 @@ export function QuizSection({
 
     if (isReviewMode && !isSuccess) {
         return (
-            <Card className="border-green-900/50 bg-green-950/20">
+            <Card className="border-green-500/50 bg-green-500/10 dark:bg-green-950/20">
                 <CardContent className="p-8 text-center space-y-4">
-                    <div className="mx-auto w-16 h-16 bg-green-900/40 rounded-full flex items-center justify-center mb-4 ring-1 ring-green-500/20 shadow-[0_0_15px_rgba(34,197,94,0.2)]">
-                        <Award className="h-8 w-8 text-green-400" />
+                    <div className="mx-auto w-16 h-16 bg-green-500/20 dark:bg-green-900/40 rounded-full flex items-center justify-center mb-4 ring-1 ring-green-500/50 shadow-[0_0_15px_rgba(34,197,94,0.2)]">
+                        <Award className="h-8 w-8 text-green-600 dark:text-green-400" />
                     </div>
-                    <h3 className="text-xl font-bold text-green-400">Module Completed!</h3>
-                    <p className="text-green-500/80">
+                    <h3 className="text-xl font-bold text-green-600 dark:text-green-400">Module Completed!</h3>
+                    <p className="text-green-700/80 dark:text-green-500/80">
                         You scored {previousScore?.score} out of {previousScore?.total}. Great job!
                     </p>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6">
                         <CertificateGenerator learnerName={learnerName} courseTitle={courseTitle} className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white border-none shadow-[0_0_15px_rgba(22,163,74,0.4)]" />
-                        <Button variant="outline" className="w-full sm:w-auto border-green-900/50 hover:bg-green-900/30 hover:text-green-300 text-green-400 bg-transparent" onClick={() => {
+                        <Button variant="outline" className="w-full sm:w-auto border-green-500/50 hover:bg-green-500/20 hover:text-green-700 dark:hover:text-green-300 text-green-600 dark:text-green-400 bg-transparent" onClick={() => {
                             setIsReviewMode(false);
                             setAnswers({});
                         }}>
@@ -117,18 +117,18 @@ export function QuizSection({
 
     if (isSuccess) {
         return (
-            <Card className="border-green-900/50 bg-green-950/20 animate-in zoom-in duration-300">
+            <Card className="border-green-500/50 bg-green-500/10 dark:bg-green-950/20 animate-in zoom-in duration-300">
                 <CardContent className="p-8 text-center space-y-4">
-                    <div className="mx-auto w-16 h-16 bg-green-900/40 rounded-full flex items-center justify-center mb-4 ring-1 ring-green-500/20 shadow-[0_0_15px_rgba(34,197,94,0.2)]">
-                        <CheckCircle2 className="h-8 w-8 text-green-400" />
+                    <div className="mx-auto w-16 h-16 bg-green-500/20 dark:bg-green-900/40 rounded-full flex items-center justify-center mb-4 ring-1 ring-green-500/50 shadow-[0_0_15px_rgba(34,197,94,0.2)]">
+                        <CheckCircle2 className="h-8 w-8 text-green-600 dark:text-green-400" />
                     </div>
-                    <h3 className="text-xl font-bold text-green-400">Answers Submitted!</h3>
-                    <p className="text-green-500/80">
+                    <h3 className="text-xl font-bold text-green-600 dark:text-green-400">Answers Submitted!</h3>
+                    <p className="text-green-700/80 dark:text-green-500/80">
                         Your responses have been recorded successfully.
                     </p>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6">
                         <CertificateGenerator learnerName={learnerName} courseTitle={courseTitle} className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white border-none shadow-[0_0_15px_rgba(22,163,74,0.4)]" />
-                        <Button variant="outline" className="w-full sm:w-auto border-green-900/50 hover:bg-green-900/30 hover:text-green-300 text-green-400 bg-transparent" onClick={() => window.location.href = '/'}>
+                        <Button variant="outline" className="w-full sm:w-auto border-green-500/50 hover:bg-green-500/20 hover:text-green-700 dark:hover:text-green-300 text-green-600 dark:text-green-400 bg-transparent" onClick={() => window.location.href = '/'}>
                             Back to Dashboard
                         </Button>
                     </div>
@@ -139,16 +139,16 @@ export function QuizSection({
 
     if (failMessage) {
         return (
-            <Card className="border-red-900/50 bg-red-950/20 p-8 text-center space-y-4 animate-in fade-in zoom-in duration-300">
-                <div className="mx-auto w-16 h-16 bg-red-900/40 rounded-full flex items-center justify-center mb-4 ring-1 ring-red-500/20">
+            <Card className="border-red-500/50 bg-red-500/10 dark:bg-red-950/20 p-8 text-center space-y-4 animate-in fade-in zoom-in duration-300">
+                <div className="mx-auto w-16 h-16 bg-red-500/20 dark:bg-red-900/40 rounded-full flex items-center justify-center mb-4 ring-1 ring-red-500/50">
                     <span className="text-3xl">⚠️</span>
                 </div>
-                <h3 className="text-xl font-bold text-red-500">Threshold Not Met</h3>
-                <p className="text-red-400/80 max-w-sm mx-auto">
+                <h3 className="text-xl font-bold text-red-600 dark:text-red-500">Threshold Not Met</h3>
+                <p className="text-red-700/80 dark:text-red-400/80 max-w-sm mx-auto">
                     {failMessage}
                 </p>
                 <div className="pt-4">
-                    <Button variant="outline" className="border-red-900/50 hover:bg-red-900/30 hover:text-red-300 text-red-400 bg-transparent" onClick={() => {
+                    <Button variant="outline" className="border-red-500/50 hover:bg-red-500/20 hover:text-red-700 dark:hover:text-red-300 text-red-600 dark:text-red-400 bg-transparent" onClick={() => {
                         setFailMessage(null);
                         setAnswers({}); // optionally clear their answers
                     }}>
@@ -162,8 +162,8 @@ export function QuizSection({
     return (
         <Card className="relative overflow-hidden">
             {!isUnlocked && (
-                <div className="absolute inset-0 z-10 bg-black/60 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center border border-white/10 rounded-xl">
-                    <h3 className="text-lg font-semibold text-white">Quiz Locked</h3>
+                <div className="absolute inset-0 z-10 bg-background/60 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center border border-border rounded-xl">
+                    <h3 className="text-lg font-semibold text-foreground">Quiz Locked</h3>
                     <p className="text-sm text-muted-foreground mt-2">
                         Please watch the video to completion to unlock the knowledge check.
                     </p>
@@ -175,7 +175,7 @@ export function QuizSection({
             </CardHeader>
             <CardContent className="space-y-8">
                 {previousScore && !didPassPreviously && (
-                    <div className="bg-red-950/40 border border-red-900/50 p-4 rounded-md text-red-400 text-sm flex items-start gap-3">
+                    <div className="bg-red-500/10 dark:bg-red-950/40 border border-red-500/50 dark:border-red-900/50 p-4 rounded-md text-red-600 dark:text-red-400 text-sm flex items-start gap-3">
                         <span className="text-xl">⚠️</span>
                         <div>
                             <strong>Previous Attempt Did Not Pass</strong>
@@ -195,9 +195,9 @@ export function QuizSection({
                                 onValueChange={(val) => handleOptionChange(q.id, val)}
                             >
                                 {JSON.parse(q.options).map((opt: string, i: number) => (
-                                    <div key={i} className="flex items-center space-x-2 bg-black/20 p-3 rounded-md border border-white/5 hover:bg-white/5 transition-colors">
+                                    <div key={i} className="flex items-center space-x-2 bg-accent/5 p-3 rounded-md border border-border hover:bg-accent/10 transition-colors">
                                         <RadioGroupItem value={opt} id={`${q.id}-${i}`} />
-                                        <Label htmlFor={`${q.id}-${i}`} className="flex-grow cursor-pointer text-white/90">{opt}</Label>
+                                        <Label htmlFor={`${q.id}-${i}`} className="flex-grow cursor-pointer text-foreground/90">{opt}</Label>
                                     </div>
                                 ))}
                             </RadioGroup>

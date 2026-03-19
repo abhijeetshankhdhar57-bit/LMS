@@ -62,7 +62,7 @@ export function VideoPlayer({ url, bannerUrl, onEnded }: { url: string; bannerUr
 
     if (isNativeVideo) {
         return (
-            <div className="w-full aspect-video rounded-md overflow-hidden bg-black shadow-lg border border-white/10 ring-1 ring-white/5">
+            <div className="w-full aspect-video rounded-md overflow-hidden bg-background shadow-lg border border-border ring-1 ring-accent/5">
                 <video
                     ref={videoRef}
                     src={url}
@@ -79,9 +79,9 @@ export function VideoPlayer({ url, bannerUrl, onEnded }: { url: string; bannerUr
 
     if (!videoId) {
         return (
-            <div className="w-full aspect-video bg-black/40 border border-white/5 rounded-md flex items-center justify-center text-muted-foreground backdrop-blur-sm">
+            <div className="w-full aspect-video bg-accent/10 border border-border rounded-md flex items-center justify-center text-muted-foreground backdrop-blur-sm">
                 <div className="text-center p-4">
-                    <p className="font-medium text-white/70">Video Preview Unavailable</p>
+                    <p className="font-medium text-foreground/70">Video Preview Unavailable</p>
                     <a href={url} target="_blank" rel="noreferrer" className="text-xs text-primary/80 hover:text-primary transition-colors underline mt-2 flex items-center gap-1 justify-center break-all">
                         Open Original Source
                     </a>
