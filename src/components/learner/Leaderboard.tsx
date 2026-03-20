@@ -29,39 +29,42 @@ export async function Leaderboard() {
     if (rankedUsers.length === 0) return null;
 
     return (
-        <Card className="bg-gradient-to-br from-black/80 to-primary/10 border-white/10 backdrop-blur-xl shadow-[0_0_30px_rgba(100,60,255,0.05)]">
-            <CardHeader className="pb-3 pt-6 text-center">
-                <CardTitle className="text-xl flex items-center justify-center gap-2 text-primary font-bold">
-                    <Trophy className="w-5 h-5 text-yellow-500 drop-shadow-[0_0_5px_rgba(250,204,21,0.8)] animate-pulse" />
+        <Card className="bg-card/40 backdrop-blur-xl border-border shadow-[0_0_30px_rgba(100,60,255,0.05)] overflow-hidden">
+            <CardHeader className="pb-4 pt-6 text-center border-b border-border/50 bg-accent/5">
+                <CardTitle className="text-lg flex items-center justify-center gap-2 text-primary font-black tracking-tight">
+                    <Trophy className="w-5 h-5 text-yellow-500 drop-shadow-[0_0_8px_rgba(250,204,21,0.6)] animate-pulse" />
                     Top Performers
                 </CardTitle>
-                <CardDescription className="uppercase tracking-widest text-[10px] font-bold mt-1">Global Leaderboard</CardDescription>
+                <CardDescription className="uppercase tracking-[0.2em] text-[9px] font-black mt-1 opacity-60">Global Leaderboard</CardDescription>
             </CardHeader>
-            <CardContent>
-                <div className="space-y-3">
+            <CardContent className="pt-6">
+                <div className="space-y-4">
                     {rankedUsers.map((user, index) => (
-                        <div key={user.id} className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/5 shadow-sm hover:bg-white/10 transition-all duration-300 transform hover:scale-[1.02]">
+                        <div key={user.id} className="flex items-center justify-between p-3 rounded-2xl bg-accent/5 border border-border/50 shadow-sm hover:bg-accent/10 transition-all duration-300 transform hover:scale-[1.02] group">
                             <div className="flex items-center gap-3">
                                 <div className="flex items-center justify-center w-8 text-lg font-bold">
                                     {index === 0 ? <Medal className="text-yellow-400 w-7 h-7 drop-shadow-[0_0_8px_rgba(250,204,21,0.5)]" /> :
-                                        index === 1 ? <Medal className="text-slate-300 w-6 h-6 drop-shadow-[0_0_5px_rgba(203,213,225,0.5)]" /> :
-                                            index === 2 ? <Medal className="text-amber-700 w-6 h-6 drop-shadow-[0_0_5px_rgba(180,83,9,0.5)]" /> :
-                                                <span className="text-muted-foreground w-6 text-center text-sm font-mono">0{index + 1}</span>}
+                                        index === 1 ? <Medal className="text-slate-400 w-6 h-6 drop-shadow-[0_0_5px_rgba(148,163,184,0.5)]" /> :
+                                            index === 2 ? <Medal className="text-amber-600 w-6 h-6 drop-shadow-[0_0_5px_rgba(217,119,6,0.5)]" /> :
+                                                <span className="text-muted-foreground w-6 text-center text-[10px] font-black opacity-30">0{index + 1}</span>}
                                 </div>
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-3">
                                     {user.image ? (
-                                        <img src={user.image} alt={user.name} className="w-8 h-8 rounded-full border-2 border-primary/20" />
+                                        <img src={user.image} alt={user.name} className="w-9 h-9 rounded-full border-2 border-primary/20 shadow-sm" />
                                     ) : (
-                                        <div className="w-8 h-8 rounded-full bg-primary/20 border-2 border-primary/50 flex items-center justify-center text-primary font-bold text-xs">
+                                        <div className="w-9 h-9 rounded-full bg-primary/20 border-2 border-primary/40 flex items-center justify-center text-primary font-black text-xs shadow-sm">
                                             {user.name.charAt(0)}
                                         </div>
                                     )}
-                                    <span className="font-semibold text-sm tracking-tight">{user.name}</span>
+                                    <div className="flex flex-col">
+                                        <span className="font-bold text-sm tracking-tight text-foreground/90">{user.name}</span>
+                                        <span className="text-[9px] text-muted-foreground font-medium uppercase tracking-widest">{index === 0 ? "Grandmaster" : index < 3 ? "Expert" : "Learner"}</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-1 text-primary font-bold bg-primary/10 px-2 py-1 rounded-md border border-primary/20">
-                                <span>{user.totalScore}</span>
-                                <span className="text-[10px] text-primary/70 uppercase">pts</span>
+                            <div className="flex items-center gap-1.5 text-primary font-black bg-primary/10 px-3 py-1.5 rounded-xl border border-primary/20 shadow-inner group-hover:scale-110 transition-transform">
+                                <span className="text-sm">{user.totalScore}</span>
+                                <span className="text-[9px] opacity-70 uppercase tracking-tighter">pts</span>
                             </div>
                         </div>
                     ))}

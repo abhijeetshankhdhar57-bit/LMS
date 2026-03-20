@@ -7,6 +7,7 @@ import { PlayCircle, CheckCircle2 } from "lucide-react";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { CourseLibrary } from "@/components/learner/CourseLibrary";
 
 export default async function CoursesPage() {
     const session = await getServerSession(authOptions);
@@ -28,58 +29,12 @@ export default async function CoursesPage() {
 
     return (
         <div className="p-8 max-w-7xl mx-auto space-y-8">
-            <div>
-                <h1 className="text-3xl font-bold">Course Library</h1>
-                <p className="text-muted-foreground mt-1">Browse all available learning modules.</p>
+            <div className="flex flex-col gap-1">
+                <h1 className="text-4xl font-extrabold tracking-tight text-foreground">Course Library</h1>
+                <p className="text-muted-foreground text-sm font-medium opacity-70 italic">Explore our curated collection of professional learning modules.</p>
             </div>
 
-            {videos.length === 0 ? (
-                <div className="p-12 text-center border border-dashed border-border rounded-xl bg-accent/5 text-muted-foreground">
-                    No courses available yet.
-                </div>
-            ) : (
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                    {videos.map((video) => {
-                        const isCompleted = video.scores.length > 0;
-
-                        return (
-                            <Card key={video.id} className="flex flex-col overflow-hidden hover:shadow-[0_0_25px_rgba(100,60,255,0.15)] transition-shadow border-border bg-card/40 backdrop-blur-sm">
-                                <div className="aspect-video bg-accent/10 border-b border-border flex items-center justify-center relative overflow-hidden group">
-                                    {video.bannerUrl ? (
-                                        <img src={video.bannerUrl} alt={video.title} className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
-                                    ) : (
-                                        <PlayCircle className="h-10 w-10 text-muted-foreground/20" />
-                                    )}
-                                    {isCompleted && (
-                                        <div className="absolute inset-0 bg-green-500/10 flex items-center justify-center backdrop-blur-[1px]">
-                                            <CheckCircle2 className="h-12 w-12 text-green-500" />
-                                        </div>
-                                    )}
-                                </div>
-                                <CardHeader className="pb-2 flex-grow">
-                                    <div className="flex justify-between items-start gap-2">
-                                        <CardTitle className="text-base line-clamp-1">{video.title}</CardTitle>
-                                    </div>
-                                    <CardDescription className="line-clamp-2 mt-1 min-h-[40px] text-xs">
-                                        {video.description || "No description provided."}
-                                    </CardDescription>
-                                </CardHeader>
-                                <CardContent className="pt-2 mt-auto border-t border-border bg-accent/5 flex flex-col gap-3">
-                                    <div className="text-xs text-muted-foreground flex justify-between">
-                                        <span>{video._count.questions} Questions</span>
-                                        {isCompleted && <span className="text-green-600 font-medium flex items-center gap-1"><CheckCircle2 className="h-3 w-3" /> Done</span>}
-                                    </div>
-                                    <Link href={`/courses/${video.id}`} className="w-full">
-                                        <Button size="sm" variant={isCompleted ? "outline" : "default"} className="w-full">
-                                            {isCompleted ? "Review Material" : "Start Learning"}
-                                        </Button>
-                                    </Link>
-                                </CardContent>
-                            </Card>
-                        );
-                    })}
-                </div>
-            )}
+            <CourseLibrary initialVideos={videos} />
         </div>
     );
 }

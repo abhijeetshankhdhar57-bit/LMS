@@ -15,6 +15,7 @@ type Question = {
     text: string;
     type: "MCQ" | "SHORT_ANSWER";
     options: string;
+    explanation?: string | null;
 };
 
 export function QuizSection({
@@ -196,7 +197,7 @@ export function QuizSection({
                             >
                                 {JSON.parse(q.options).map((opt: string, i: number) => (
                                     <div key={i} className="flex items-center space-x-2 bg-accent/5 p-3 rounded-md border border-border hover:bg-accent/10 transition-colors">
-                                        <RadioGroupItem value={opt} id={`${q.id}-${i}`} />
+                                        <RadioGroupItem value={opt} id={`${q.id}-${i}`} disabled={isReviewMode} />
                                         <Label htmlFor={`${q.id}-${i}`} className="flex-grow cursor-pointer text-foreground/90">{opt}</Label>
                                     </div>
                                 ))}
@@ -207,7 +208,22 @@ export function QuizSection({
                                 value={answers[q.id] || ""}
                                 onChange={(e) => handleOptionChange(q.id, e.target.value)}
                                 className="min-h-[100px]"
+                                disabled={isReviewMode}
                             />
+                        )}
+
+                        {isReviewMode && q.explanation && (
+                            <div className="mt-4 p-4 rounded-xl bg-primary/5 border border-primary/20 text-sm animate-in fade-in slide-in-from-top-1 duration-300">
+                                <div className="flex items-center gap-2 mb-2">
+                                    <div className="bg-primary/20 p-1 rounded-md">
+                                        <Award className="h-3.5 w-3.5 text-primary" />
+                                    </div>
+                                    <span className="font-bold text-[10px] uppercase tracking-widest text-primary">Learning Note</span>
+                                </div>
+                                <p className="text-foreground/80 leading-relaxed italic">
+                                    {q.explanation}
+                                </p>
+                            </div>
                         )}
                     </div>
                 ))}

@@ -51,6 +51,7 @@ model Question {
   points    Int          @default(1)
   options   String     // For MCQ, store array of options as JSON string
   correctOption String? // Store exact text of correct option
+  explanation   String? // For providing feedback after quiz submission
   answers   Answer[]
   createdAt DateTime     @default(now())
 }
