@@ -9,100 +9,89 @@ datasource db {
 
 model User {
   id            String    @id @default(uuid())
-  name          String?
   email         String?   @unique
   phone         String?   @unique
-  emailVerified DateTime?
-  image         String?
+  name          String?
   role          Role      @default(LEARNER)
-  accounts      Account[]
-  sessions      Session[]
-  scores        Score[]
-  answers       Answer[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-}
-
-enum Role {
-  ADMIN
-  LEARNER
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  answers       Answer[]
+  scores        Score[]
+  sessions      Session[]
 }
 
 model Video {
-  id          String     @id @default(uuid())
-  title       String
-  description String?
-  url         String
-  bannerUrl   String?
-  driveUrl    String?    // Optional link for Google Drive, PPT, PDF, etc.
-  isMandatory Boolean    @default(false)
-  passingPercentage Int  @default(0)
-  questions   Question[]
-  scores      Score[]
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  id                String     @id @default(uuid())
+  title             String
+  description       String?
+  url               String
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  isMandatory       Boolean    @default(false)
+  driveUrl          String?
+  bannerUrl         String?
+  passingPercentage Int        @default(0)
+  questions         Question[]
+  scores            Score[]
 }
 
 model Question {
-  id        String       @id @default(uuid())
-  videoId   String
-  video     Video        @relation(fields: [videoId], references: [id], onDelete: Cascade)
-  text      String
-  type      QuestionType
-  points    Int          @default(1)
-  options   String     // For MCQ, store array of options as JSON string
-  correctOption String? // Store exact text of correct option
-  explanation   String? // For providing feedback after quiz submission
-  answers   Answer[]
-  createdAt DateTime     @default(now())
-}
-
-enum QuestionType {
-  MCQ
-  SHORT_ANSWER
+  id            String       @id @default(uuid())
+  videoId       String
+  text          String
+  type          QuestionType
+  options       String
+  createdAt     DateTime     @default(now())
+  points        Int          @default(1)
+  correctOption String?
+  explanation   String?
+  answers       Answer[]
+  video         Video        @relation(fields: [videoId], references: [id], onDelete: Cascade)
 }
 
 model Answer {
   id           String   @id @default(uuid())
   userId       String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   questionId   String
-  question     Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   responseText String
-  isCorrect    Boolean? // For MCQ or manual grading
+  isCorrect    Boolean?
   createdAt    DateTime @default(now())
+  question     Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, questionId]) // One answer per question per user
+  @@unique([userId, questionId])
 }
 
 model Score {
-  id         String   @id @default(uuid())
-  userId     String
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  videoId    String
-  video      Video    @relation(fields: [videoId], references: [id], onDelete: Cascade)
-  score      Int
-  total      Int
+  id          String   @id @default(uuid())
+  userId      String
+  videoId     String
+  score       Int
+  total       Int
   completedAt DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  video       Video    @relation(fields: [videoId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, videoId]) // One score per video per user
+  @@unique([userId, videoId])
 }
 
 model Account {
-  id                 String  @id @default(uuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.Text
-  session_state      String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String  @id @default(uuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -129,4 +118,14 @@ model Otp {
   code      String
   expiresAt DateTime
   createdAt DateTime @default(now())
+}
+
+enum Role {
+  ADMIN
+  LEARNER
+}
+
+enum QuestionType {
+  MCQ
+  SHORT_ANSWER
 }
