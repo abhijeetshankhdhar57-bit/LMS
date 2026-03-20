@@ -31,9 +31,9 @@ export async function sendOtp(phone: string) {
         await sendSMS(phone, code);
 
         return { success: true, message: "OTP sent successfully (Check console for mock)" };
-    } catch (error) {
+    } catch (error: any) {
         console.error("Error sending OTP:", error);
-        return { error: "Failed to send OTP. Please try again." };
+        return { error: `Failed to send OTP: ${error.message || "Unknown error"}` };
     }
 }
 
