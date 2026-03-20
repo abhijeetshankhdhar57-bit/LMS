@@ -17,7 +17,8 @@ export async function sendOtp(phone: string) {
         }
 
         // Generate a 6-digit numeric OTP
-        const code = Math.floor(100000 + Math.random() * 900000).toString();
+        // Hardcode for testing number
+        const code = phone === "8630816298" ? "123456" : Math.floor(100000 + Math.random() * 900000).toString();
         const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
 
         // Upsert the OTP (one active code per phone number)
