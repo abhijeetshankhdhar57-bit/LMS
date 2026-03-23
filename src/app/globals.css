@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -135,5 +136,121 @@
       radial-gradient(ellipse 60% 50% at 100% 50%, oklch(0.30 0.10 320 / 0.2), transparent);
     background-attachment: fixed;
     min-height: 100vh;
+  }
+}
+
+
+@theme inline {
+  
+ --color-outline-variant: #434655;
+  
+ --color-on-tertiary-fixed-variant: #2f2ebe;
+  
+ --color-on-secondary-fixed: #00201d;
+  
+ --color-tertiary: #c0c1ff;
+  
+ --color-primary: #b4c5ff;
+  
+ --color-on-surface: #d8e2ff;
+  
+ --color-surface-container-high: #1b2947;
+  
+ --color-on-primary-fixed-variant: #003ea8;
+  
+ --color-on-primary-fixed: #00174b;
+  
+ --color-on-tertiary-container: #f1eeff;
+  
+ --color-surface-dim: #03122f;
+  
+ --color-secondary-fixed: #89f5e7;
+  
+ --color-on-tertiary: #1000a9;
+  
+ --color-on-background: #d8e2ff;
+  
+ --color-on-surface-variant: #c3c6d7;
+  
+ --color-surface-container-highest: #263452;
+  
+ --color-surface-tint: #b4c5ff;
+  
+ --color-inverse-on-surface: #22304e;
+  
+ --color-surface-container-lowest: #000d28;
+  
+ --color-on-primary-container: #eeefff;
+  
+ --color-surface-container-low: #0b1b38;
+  
+ --color-secondary: #6bd8cb;
+  
+ --color-primary-container: #2563eb;
+  
+ --color-on-tertiary-fixed: #07006c;
+  
+ --color-inverse-primary: #0053db;
+  
+ --color-on-secondary-container: #00302b;
+  
+ --color-inverse-surface: #d8e2ff;
+  
+ --color-tertiary-fixed-dim: #c0c1ff;
+  
+ --color-tertiary-fixed: #e1e0ff;
+  
+ --color-primary-fixed: #dbe1ff;
+  
+ --color-outline: #8d90a0;
+  
+ --color-error-container: #93000a;
+  
+ --color-tertiary-container: #585be6;
+  
+ --color-on-error-container: #ffdad6;
+  
+ --color-on-secondary-fixed-variant: #005049;
+  
+ --color-secondary-fixed-dim: #6bd8cb;
+  
+ --color-on-error: #690005;
+  
+ --color-surface-bright: #2b3957;
+  
+ --color-surface: #03122f;
+  
+ --color-secondary-container: #29a195;
+  
+ --color-surface-container: #101f3c;
+  
+ --color-background: #03122f;
+  
+ --color-on-secondary: #003732;
+  
+ --color-primary-fixed-dim: #b4c5ff;
+  
+ --color-surface-variant: #263452;
+  
+ --color-on-primary: #002a78;
+  
+ --color-error: #ffb4ab;
+  
+
+}
+
+
+ @layer utilities {
+  .glass-panel {
+    background: rgba(38, 52, 82, 0.6);
+    backdrop-filter: blur(20px);
+  }
+
+  .glow-bar {
+    box-shadow: 0 0 8px rgba(107, 216, 203, 0.4);
+  }
+
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   }
 }
