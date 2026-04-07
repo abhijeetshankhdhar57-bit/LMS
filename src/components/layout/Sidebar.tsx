@@ -111,15 +111,7 @@ export function Sidebar() {
                 </div>
             )}
 
-            {activeRole === "ADMIN" && (
-                <div className="p-4 border-t border-border mt-auto">
-                    <div className="rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 p-4 border border-border relative overflow-hidden">
-                        <div className="absolute -top-10 -right-10 w-24 h-24 bg-primary/40 blur-2xl rounded-full pointer-events-none" />
-                        <p className="text-xs font-medium text-foreground/80">Premium LMS Experience</p>
-                        <p className="text-[10px] text-white/50 mt-1">Design V2</p>
-                    </div>
-                </div>
-            )}
+
         </motion.div>
     );
 }

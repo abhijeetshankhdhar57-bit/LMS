@@ -117,13 +117,7 @@ export function TopBar() {
                                         </div>
                                     )}
                                 </nav>
-                                {activeRole === "ADMIN" && (
-                                    <div className="p-4 border-t border-border mt-auto">
-                                        <div className="rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 p-4 border border-border relative overflow-hidden">
-                                            <p className="text-xs font-medium text-foreground/80">Premium LMS Experience</p>
-                                        </div>
-                                    </div>
-                                )}
+
                             </SheetContent>
                         </Sheet>
                     </div>
